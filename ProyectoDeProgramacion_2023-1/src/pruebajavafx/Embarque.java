@@ -21,6 +21,7 @@ public class Embarque {
         printArreglo();
         insertionSort();
         //printArreglo();
+
           
     }
      
@@ -37,6 +38,7 @@ public class Embarque {
             int valorActual = cajas.get(i).getNum();
             int j = i - 1;
             while(j >= 0 && cajas.get(j).getNum() > valorActual){
+
                 System.out.println("-> "+valorActual);
                 System.out.println(cajas.get(j).getNum()+" - "+valorActual );
                 cajas.get(j+1).setNum(cajas.get(j).getNum());
@@ -47,7 +49,6 @@ public class Embarque {
             }
             //cajas.get(j+1).setNum(valorActual);
             //Destacado por Nicolás
-            
         }
     }
 
