@@ -46,7 +46,6 @@ public class Embarque {
                 
             }
             //cajas.get(j+1).setNum(valorActual);
-            //Ultimo movimiento hecho por Nicolás
             
         }
     }
