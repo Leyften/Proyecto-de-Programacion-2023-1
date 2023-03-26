@@ -19,8 +19,9 @@ public class Embarque {
             cajas.add(caja);
         }
         printArreglo();
-        BubbleSort();
-        printArreglo();
+        insertionSort();
+        //printArreglo();
+
           
     }
      
@@ -32,15 +33,22 @@ public class Embarque {
         System.out.println(cajas.get(cajas.size()-1).getNum() + "]");
     }
     
-    public void BubbleSort(){
+    public void insertionSort(){
         for(int i = 1; i < cajas.size(); i++){
             int valorActual = cajas.get(i).getNum();
             int j = i - 1;
             while(j >= 0 && cajas.get(j).getNum() > valorActual){
+
+                System.out.println("-> "+valorActual);
+                System.out.println(cajas.get(j).getNum()+" - "+valorActual );
                 cajas.get(j+1).setNum(cajas.get(j).getNum());
                 j--;
+                cajas.get(j+1).setNum(valorActual);
+                printArreglo();
+                
             }
-            cajas.get(j+1).setNum(valorActual);
+            //cajas.get(j+1).setNum(valorActual);
+            //Destacado por Nicolás
         }
     }
 
