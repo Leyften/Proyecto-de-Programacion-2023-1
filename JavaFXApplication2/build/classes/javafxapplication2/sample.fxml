@@ -8,8 +8,8 @@
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication2.Controller">
    <children>
       <Button layoutX="732.0" layoutY="27.0" mnemonicParsing="false" onAction="#start" text="Start" />
-      <Label layoutX="551.0" layoutY="30.0" prefHeight="18.0" prefWidth="94.0" text="Cuantas cajas?" />
+      <Label layoutX="551.0" layoutY="30.0" prefHeight="18.0" prefWidth="94.0" text="¿Cúantas cajas?" />
       <TextField fx:id="text_usuario" layoutX="657.0" layoutY="27.0" prefHeight="26.0" prefWidth="63.0" />
-      <Button fx:id="Alma" layoutX="727.0" layoutY="65.0" mnemonicParsing="false" onAction="#insertionSort2" text="Button" />
+      <Button fx:id="Alma" layoutX="727.0" layoutY="65.0" mnemonicParsing="false" onAction="#insertionSort2" text="Ordenar" />
    </children>
 </AnchorPane>

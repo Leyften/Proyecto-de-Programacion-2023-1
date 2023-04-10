@@ -32,13 +32,11 @@ public class Controller implements Initializable{
     TranslateTransition transicion = new TranslateTransition();
     TranslateTransition transicion2 = new TranslateTransition();
     TranslateTransition transicion3 = new TranslateTransition();
-
-    //TranslateTransition transition_1;
+    TranslateTransition transicion4 = new TranslateTransition();
 
     Random rand = new Random();
     
     ArrayList<Rectangle> contenido = new ArrayList<Rectangle>();
-    ArrayList cont_numeros = new ArrayList();
     
     boolean temp = false;
     
@@ -83,26 +81,7 @@ public class Controller implements Initializable{
             alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
             alert.showAndWait();
         }
-        /*
-        double cantidad = Double.parseDouble(this.text_usuario.getText());
-        //int cantidad = Integer.parseInt(this.text_usuario.getText());
-        if(cantidad>0 && (cantidad%1)==0){
-          if(this.temp == false){
-                crearRect((int) (cantidad-1));
-                this.temp=true;
-            }else{
-                this.anchorPane.getChildren().removeAll(this.contenido);
-                this.contenido.clear();               
-                crearRect((int )(cantidad-1));
-            }  
-        }else{
-            System.out.println("Valor no valido");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("ERROR");
-            alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
-            alert.showAndWait();
-        }*/
+        
     }
     
     
@@ -145,27 +124,32 @@ public class Controller implements Initializable{
             int valorActual;
             int j = i - 1;
             valorActual=(int) this.contenido.get(i).getHeight();
-            //valorActual = Integer.parseInt(Double.toString(this.contenido.get(i).getHeight()));  
             while(j >= 0 && this.contenido.get(j).getHeight()> valorActual){
-                //System.out.println("while");
-                //this.numeros.get(j);
-                int k =i;
                 
+                int k =i;
                 while(k>=0){
-                    //System.out.println("vuelta");
                     desplazamiento(k,j);
                     k--;
                 }
                 
-                
-                
-                
-                 
+                //desplazamientoAislado(i);
                
                 this.contenido.get(j+1).setHeight(this.contenido.get(j).getHeight());
+                //desplazamientoLateral(j);
                 j--;
+                //2 3 |1|
+                //  j  i
+                //2 3 > |1|
+                //       i
+                //  j > |1|
+                //2 >|1| 3
+                //j 
+                //1 2 3
             }
+            
             this.contenido.get(j+1).setHeight(valorActual);
+            //desplazamientoReincorporadoH((j+1), i);
+           // desplazamientoReincorporadoV(i);
         } 
         
         
@@ -215,6 +199,46 @@ public class Controller implements Initializable{
                
     }
     
+    public void desplazamientoAislado(int i){
+        transicion.setNode(contenido.get(i));
+        transicion.setDuration(Duration.millis(1000));
+        //double temp = contenido.get(i).getX();
+        transicion.setByY(100);
+        //contenido.get(i).setY((contenido.get(i).getY())+100);
+        //transicion.setByX(-60);
+        transicion.play();
+        contenido.get(i).setY(contenido.get(i).getY()+100);
+        
+    }
+    
+    public void desplazamientoLateral(int j){
+        transicion2.setNode(contenido.get(j));
+        transicion2.setDelay(Duration.millis(1000));
+        transicion2.setDuration(Duration.millis(1000));
+        double temp = contenido.get(j+1).getX();
+        transicion2.setByX(temp-contenido.get(j).getX());
+        transicion2.play();
+        contenido.get(j).setX(temp-contenido.get(j).getX());
+    }
+    
+    public void desplazamientoReincorporadoH(int j/*+1*/, int i){
+        transicion3.setNode(contenido.get(i));
+        transicion3.setDelay(Duration.millis(2000));
+        transicion3.setDuration(Duration.millis(1000));
+        transicion3.setByX(-(i-j)*60);
+        transicion3.play();
+        contenido.get(i).setX(contenido.get(i).getX()-((i-j)*60));
+    }
+    
+    public void desplazamientoReincorporadoV(int i){
+        transicion4.setNode(contenido.get(i));
+        transicion4.setDelay(Duration.millis(2000));
+        transicion4.setDuration(Duration.millis(1000));
+        transicion4.setByY(-100);
+        //contenido.get(i).setY(contenido.get(i).getY()-100);
+        transicion4.play();
+        contenido.get(i).setY(contenido.get(i).getY()-100);
+    }
     
     //MOVIMIENTO QUE SE HACE MANUAL
     public void movimientoM(){
