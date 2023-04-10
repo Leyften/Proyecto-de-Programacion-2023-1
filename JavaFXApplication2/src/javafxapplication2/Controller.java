@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.transform.Translate;
+import java.util.Collections;
 
 
 
@@ -28,13 +29,16 @@ public class Controller implements Initializable{
     @FXML
     private AnchorPane anchorPane;
 
-    TranslateTransition transicion = new TranslateTransition() ;
+    TranslateTransition transicion = new TranslateTransition();
+    TranslateTransition transicion2 = new TranslateTransition();
+    TranslateTransition transicion3 = new TranslateTransition();
 
     //TranslateTransition transition_1;
 
     Random rand = new Random();
     
-    ArrayList<Rectangle> contenido = new ArrayList<Rectangle>(); 
+    ArrayList<Rectangle> contenido = new ArrayList<Rectangle>();
+    ArrayList cont_numeros = new ArrayList();
     
     boolean temp = false;
     
@@ -51,14 +55,16 @@ public class Controller implements Initializable{
 
     @FXML
     void start(ActionEvent event) {
-        double cantidad = Double.parseDouble(this.text_usuario.getText());
-        //int cantidad = Integer.parseInt(this.text_usuario.getText());
-        if(cantidad>0 && (cantidad%1)==0){
+        try{
+            //int cantidad = (int) (this.text_usuario.getText());
+            double cantidad = Double.parseDouble(this.text_usuario.getText());
+            if(cantidad>0 && (cantidad%1)==0){
           if(this.temp == false){
-            crearRect((int) (cantidad-1));
-            this.temp=true;
+                crearRect((int) (cantidad-1));
+                this.temp=true;
             }else{
-                this.contenido.clear();
+                this.anchorPane.getChildren().removeAll(this.contenido);
+                this.contenido.clear();               
                 crearRect((int )(cantidad-1));
             }  
         }else{
@@ -68,58 +74,42 @@ public class Controller implements Initializable{
             alert.setTitle("ERROR");
             alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
             alert.showAndWait();
-            
         }
-        
-        
-        
-        
-        //crearM();
-        //crearRect(3);
-        //resetRectangles();
+        }catch(NumberFormatException e){
+            System.out.println("Valor no valido");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR");
+            alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
+            alert.showAndWait();
+        }
         /*
-        transition.play();
-        transition_1.play();*/
+        double cantidad = Double.parseDouble(this.text_usuario.getText());
+        //int cantidad = Integer.parseInt(this.text_usuario.getText());
+        if(cantidad>0 && (cantidad%1)==0){
+          if(this.temp == false){
+                crearRect((int) (cantidad-1));
+                this.temp=true;
+            }else{
+                this.anchorPane.getChildren().removeAll(this.contenido);
+                this.contenido.clear();               
+                crearRect((int )(cantidad-1));
+            }  
+        }else{
+            System.out.println("Valor no valido");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR");
+            alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
+            alert.showAndWait();
+        }*/
     }
-    /*
-    public void resetRectangles(){
-        int recHeightX = rand.nextInt(250);
-        int recHeightX_1 = rand.nextInt(250);
-
-        int recHeight = 25 + rand.nextInt(50);
-        int recWidth = 25 + rand.nextInt(50);
-
-        int recHeight_1 = 25 + rand.nextInt(50);
-        int recWidth_1 = 25 + rand.nextInt(50);
-
-        Rectangle rectangle = new Rectangle(-100,recHeightX,recHeight,recWidth);
-
-        Rectangle rectangle_1 = new Rectangle(600,recHeightX_1,recHeight_1,recWidth_1);
-
-        transition = new TranslateTransition();
-
-        transition_1 = new TranslateTransition();
-
-        anchorPane.getChildren().addAll(rectangle,rectangle_1);
-        rectangle.setFill(Color.web("#2191FB"));
-        rectangle_1.setFill(Color.web("#BA274A"));
-
-        //Rectangle transition
-        transition.setNode(rectangle);
-        transition.setDuration(Duration.seconds(5));
-        transition.setToX(700);
-
-
-        //Rectangle_1 transition
-        transition_1.setNode(rectangle_1);
-        transition_1.setDuration(Duration.seconds(5));
-        transition_1.setToX(-700);
-    }
-    */
+    
+    
     public void crearRect(int cantidad){
         RotateTransition rotacion = new RotateTransition();
         for (int i = 0; i <= cantidad; i++) {
-            Rectangle caja = new Rectangle(posX+(i*60), posY, 50, (rand.nextInt(50)) );
+            Rectangle caja = new Rectangle(posX+(i*60), posY, 50, rand.nextInt(50) );
             rotacion.setNode(caja);
             rotacion.setDuration(Duration.millis(1));
             rotacion.setByAngle(180);
@@ -128,33 +118,60 @@ public class Controller implements Initializable{
             anchorPane.getChildren().addAll(this.contenido.get(i));
             this.contenido.get(i).setFill(Color.web("#2191FB"));
         }
-        
     }
     
-    private void insertionSort(){
-        
-        
-        for(int i = 0; i <= this.contenido.size(); i++){
+    private void insertionSort(){        
+        for(int i = 0; i < this.contenido.size(); i++){
+            double valorActual;
+            int j = i - 1;
+            valorActual=this.contenido.get(i).getHeight();
+            //valorActual = Integer.parseInt(Double.toString(this.contenido.get(i).getHeight()));  
+            while(j >= 0 && this.contenido.get(j).getHeight()> valorActual){
+                desplazamiento(i,j);
+                
+                
+                 
+               
+                //this.contenido.get(j+1).setHeight(this.contenido.get(j).getHeight());
+                j--;
+            }
+            //this.contenido.get(j+1).setHeight(valorActual);
+        }    
+    }
+    @FXML
+    private void insertionSort2(){
+        for(int i = 0; i < this.contenido.size(); i++){
+            //System.out.println("i->"+i);
             int valorActual;
             int j = i - 1;
-            valorActual = Integer.parseInt(Double.toString(this.contenido.get(i).getHeight()));  
+            valorActual=(int) this.contenido.get(i).getHeight();
+            //valorActual = Integer.parseInt(Double.toString(this.contenido.get(i).getHeight()));  
             while(j >= 0 && this.contenido.get(j).getHeight()> valorActual){
-                //animacion de movimiento
-                this.contenido.get(j-1).setFill(Color.web("#E6FA07"));
-                this.contenido.get(j).setFill(Color.web("#FA4439"));
-                transicion.setNode(this.contenido.get(j));
-                transicion.setDuration(Duration.millis(1000));
-                transicion.setByY(posY+100);
-                //
+                //System.out.println("while");
+                //this.numeros.get(j);
+                int k =i;
+                
+                while(k>=0){
+                    //System.out.println("vuelta");
+                    desplazamiento(k,j);
+                    k--;
+                }
+                
+                
+                
+                
+                 
+               
                 this.contenido.get(j+1).setHeight(this.contenido.get(j).getHeight());
                 j--;
             }
             this.contenido.get(j+1).setHeight(valorActual);
-            
-            
-        }
-    
+        } 
+        
+        
+        
     }
+    
     
     public void crearM(){
         Rectangle caja = new Rectangle(50, 250, 50, (50) );
@@ -168,30 +185,62 @@ public class Controller implements Initializable{
         
     }
     
-    @FXML
-    public void movimientoM(){
-        contenido.get(0).setFill(Color.web("#E6FA07"));
-                contenido.get(1).setFill(Color.web("#FA4439"));
-                System.out.println(contenido.get(1).getHeight());
-                
-                transicion.setNode(contenido.get(1));
-                //System.out.println(transicion.getNode().toString());
-                transicion.setDuration(Duration.millis(1000));
-                transicion.setByY(posY+30);
-                transicion.setByX(-10-posX);
-                transicion.play();
-                
-                transicion.setNode(contenido.get(1));
-                transicion.setDuration(Duration.millis(1000));
-                transicion.setByY((posY));
-                transicion.play();
-                
-                transicion.setByY(posY+10);
-                transicion.setByX(posX);
-                
-                
+    public void desplazamiento(/*1*/int i,/*0*/ int j){
+        contenido.get(j).setFill(Color.web("#E6FA07"));
+        contenido.get(i).setFill(Color.web("#FA4439"));
+        transicion.setNode(contenido.get(i));
+        transicion.setDuration(Duration.millis(1000));
+        double temp = contenido.get(i).getX();
+        transicion.setByY(100);
+        //contenido.get(i).setY((contenido.get(i).getY())+100);
+        transicion.setByX(-60);
+        transicion.play();
+        
+        transicion2.setNode(contenido.get(j));
+        transicion2.setDelay(Duration.millis(1000));
+        transicion2.setDuration(Duration.millis(1000));
+        transicion2.setByX(temp-contenido.get(j).getX());
+        transicion2.play(); 
+        
+        transicion3.setNode(contenido.get(i));
+        transicion3.setDelay(Duration.millis(2000));
+        transicion3.setDuration(Duration.millis(1000));
+        transicion3.setByY(-1);
+        //contenido.get(i).setY(contenido.get(i).getY()-100);
+        transicion3.play();
+        
+        contenido.get(i).setFill(Color.web("#2191FB"));
+        contenido.get(j).setFill(Color.web("#2191FB"));
+        
+               
     }
     
+    
+    //MOVIMIENTO QUE SE HACE MANUAL
+    public void movimientoM(){
+        contenido.get(0).setFill(Color.web("#E6FA07"));
+        contenido.get(1).setFill(Color.web("#FA4439"));
+        transicion.setNode(contenido.get(1));
+        transicion.setDuration(Duration.millis(1000));
+        double temp = contenido.get(1).getX();
+        transicion.setByY(100);
+        transicion.setByX(-10-posX);
+        transicion.play();
+        
+        transicion2.setNode(contenido.get(0));
+        transicion2.setDelay(Duration.millis(1000));
+        transicion2.setDuration(Duration.millis(1000));
+        transicion2.setByX(temp-contenido.get(0).getX());
+        transicion2.play(); 
+
+        transicion3.setNode(contenido.get(1));
+        transicion3.setDelay(Duration.millis(2000));
+        transicion3.setDuration(Duration.millis(1000));
+        transicion3.setByY(-1);
+        transicion3.play();
+        
+    }
+       
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {/*
@@ -203,4 +252,6 @@ public class Controller implements Initializable{
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();*/
     }
+
+    
 }
