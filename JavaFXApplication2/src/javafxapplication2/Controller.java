@@ -57,22 +57,22 @@ public class Controller implements Initializable{
             //int cantidad = (int) (this.text_usuario.getText());
             double cantidad = Double.parseDouble(this.text_usuario.getText());
             if(cantidad>0 && (cantidad%1)==0){
-          if(this.temp == false){
-                crearRect((int) (cantidad-1));
-                this.temp=true;
+                if(this.temp == false){
+                      crearRect((int) (cantidad-1));
+                      this.temp=true;
+                  }else{
+                      this.anchorPane.getChildren().removeAll(this.contenido);
+                      this.contenido.clear();               
+                      crearRect((int )(cantidad-1));
+                  }  
             }else{
-                this.anchorPane.getChildren().removeAll(this.contenido);
-                this.contenido.clear();               
-                crearRect((int )(cantidad-1));
-            }  
-        }else{
-            System.out.println("Valor no valido");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("ERROR");
-            alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
-            alert.showAndWait();
-        }
+                System.out.println("Valor no valido");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("ERROR");
+                alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
+                alert.showAndWait();
+            }
         }catch(NumberFormatException e){
             System.out.println("Valor no valido");
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -84,7 +84,7 @@ public class Controller implements Initializable{
         
     }
     
-    
+    //Aqui se crea los rectangulos, se queria usar rotacion para dejar en buena posicion los rectangulos, al final no lo use
     public void crearRect(int cantidad){
         RotateTransition rotacion = new RotateTransition();
         for (int i = 0; i <= cantidad; i++) {
@@ -98,7 +98,7 @@ public class Controller implements Initializable{
             this.contenido.get(i).setFill(Color.web("#2191FB"));
         }
     }
-    
+    //Metodo que no use
     private void insertionSort(){        
         for(int i = 0; i < this.contenido.size(); i++){
             double valorActual;
@@ -117,6 +117,7 @@ public class Controller implements Initializable{
             //this.contenido.get(j+1).setHeight(valorActual);
         }    
     }
+    //Todos los metodos @FXML se usan en la pantalla, este hace el insetion sort y es el que estaba trabajando para usarlo en la animacion
     @FXML
     private void insertionSort2(){
         for(int i = 0; i < this.contenido.size(); i++){
@@ -156,7 +157,7 @@ public class Controller implements Initializable{
         
     }
     
-    
+    //Solo un metodo de pruebas para crear rectangulos
     public void crearM(){
         Rectangle caja = new Rectangle(50, 250, 50, (50) );
         caja.setFill(Color.web("#2191FB"));
@@ -168,7 +169,7 @@ public class Controller implements Initializable{
         anchorPane.getChildren().addAll(this.contenido);
         
     }
-    
+    //Este metodo tiene la animacion más en general
     public void desplazamiento(/*1*/int i,/*0*/ int j){
         contenido.get(j).setFill(Color.web("#E6FA07"));
         contenido.get(i).setFill(Color.web("#FA4439"));
@@ -198,7 +199,8 @@ public class Controller implements Initializable{
         
                
     }
-    
+    //De aqui son metodos especificos para la animacion, estaba tratando de hacerlo de otra forma comparado con el anterior
+    //Tomo una caja y la dejo de lado
     public void desplazamientoAislado(int i){
         transicion.setNode(contenido.get(i));
         transicion.setDuration(Duration.millis(1000));
@@ -210,7 +212,7 @@ public class Controller implements Initializable{
         contenido.get(i).setY(contenido.get(i).getY()+100);
         
     }
-    
+    //las cajas anteriores las mueve hacia la derecha
     public void desplazamientoLateral(int j){
         transicion2.setNode(contenido.get(j));
         transicion2.setDelay(Duration.millis(1000));
@@ -220,7 +222,7 @@ public class Controller implements Initializable{
         transicion2.play();
         contenido.get(j).setX(temp-contenido.get(j).getX());
     }
-    
+    //la caja aislada se mueve a la poscion correspondiente en el eje X
     public void desplazamientoReincorporadoH(int j/*+1*/, int i){
         transicion3.setNode(contenido.get(i));
         transicion3.setDelay(Duration.millis(2000));
@@ -229,7 +231,7 @@ public class Controller implements Initializable{
         transicion3.play();
         contenido.get(i).setX(contenido.get(i).getX()-((i-j)*60));
     }
-    
+    //la caja se mueve en el eje vertical para reicorporarse con las otras cajas
     public void desplazamientoReincorporadoV(int i){
         transicion4.setNode(contenido.get(i));
         transicion4.setDelay(Duration.millis(2000));
