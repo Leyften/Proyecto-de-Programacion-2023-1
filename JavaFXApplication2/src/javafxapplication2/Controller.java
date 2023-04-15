@@ -98,7 +98,7 @@ public class Controller implements Initializable{
         
         for (int i = 0; i <= cantidad; i++) {
             Rectangle caja = new Rectangle(posX+(i*60), posY, 50, rand.nextInt(50) );
-            NumBuilder = new NumBuilder(2, posX+(0*60), posY , 50);
+            NumBuilder = new NumBuilder(8, posX+(0*60), posY , 50);
             /*
             try { 
                 Thread.sleep(100);

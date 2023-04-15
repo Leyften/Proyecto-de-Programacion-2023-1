@@ -88,10 +88,10 @@ public class NumBuilder {
                 
             case 3:
                 
-                linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
+                linea = new Line(posX, posY, posX+AnchNum/2, posY);
+                linea2 = new Line(posX, posY+AltNum/2, posX+AnchNum/2, posY+AltNum/2);
+                linea3 = new Line(posX, posY+AltNum, posX+AnchNum/2, posY+AltNum);
+                linea4 = new Line(posX+AnchNum/2, posY, posX+AnchNum/2, posY+AltNum);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -104,9 +104,9 @@ public class NumBuilder {
                 
             case 4: 
                 
-                linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
+                linea = new Line(posX, posY, posX, posY+AltNum/2);
+                linea2 = new Line(posX, posY+AltNum/2, posX+AnchNum/2, posY+AltNum/2);
+                linea3 = new Line(posX+AnchNum/2, posY, posX+AnchNum/2, posY+AltNum);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -116,11 +116,11 @@ public class NumBuilder {
                                 
             case 5: 
                 
-                linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
+                linea = new Line(posX+AnchNum/2, posY, posX, posY);
+                linea2 = new Line(posX, posY, posX, posY+AltNum/2);
+                linea3 = new Line(posX, posY+AltNum/2, posX+AnchNum/2, posY+AltNum/2);
+                linea4 = new Line(posX+AnchNum/2, posY+AltNum/2, posX+AnchNum/2, posY+AltNum);
+                linea5 = new Line(posX+AnchNum/2, posY+AltNum, posX, posY+AltNum);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -133,11 +133,11 @@ public class NumBuilder {
                                 
             case 6: 
                 
-                linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
+                linea = new Line(posX, posY, posX+AnchNum/2, posY);
+                linea2 = new Line(posX, posY, posX, posY+AltNum);
+                linea3 = new Line(posX, posY+AltNum/2, posX+AnchNum/2, posY+AltNum/2);
+                linea4 = new Line(posX, posY+AltNum, posX+AnchNum/2, posY+AltNum);
+                linea5 = new Line(posX+AnchNum/2, posY+AltNum/2, posX+AnchNum/2, posY+AltNum);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -151,8 +151,8 @@ public class NumBuilder {
                 
             case 7:
                 
-                linea = new Line(0.0f, 0.0f, 80.0f, 0.0f);
-                linea2 = new Line(80.0f, 0.0f, 80.0f, 100.0f);
+                linea = new Line(posX, posY, posX+AnchNum/2, posY);
+                linea2 = new Line(posX+AnchNum/2, posY, posX+AnchNum/2, posY+AltNum);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -161,11 +161,11 @@ public class NumBuilder {
 
             case 8:
                 
-                linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
+                linea = new Line(posX, posY, posX, posY+AltNum);
+                linea2 = new Line(posX, posY, posX+AnchNum/2, posY);
+                linea3 = new Line(posX, posY+AltNum/2, posX+AnchNum/2, posY+AltNum/2);
+                linea4 = new Line(posX, posY+AltNum, posX+AnchNum/2, posY+AltNum);
+                linea5 = new Line(posX+AnchNum/2, posY, posX+AnchNum/2, posY+AltNum);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
