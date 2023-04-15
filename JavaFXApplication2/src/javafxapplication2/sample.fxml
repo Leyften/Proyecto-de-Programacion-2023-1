@@ -10,6 +10,6 @@
       <Button layoutX="732.0" layoutY="27.0" mnemonicParsing="false" onAction="#start" text="Start" />
       <Label layoutX="551.0" layoutY="30.0" prefHeight="18.0" prefWidth="94.0" text="¿Cúantas cajas?" />
       <TextField fx:id="text_usuario" layoutX="657.0" layoutY="27.0" prefHeight="26.0" prefWidth="63.0" />
-      <Button fx:id="Alma" layoutX="727.0" layoutY="65.0" mnemonicParsing="false" onAction="#insertionSort2" text="Ordenar" />
+      <Button fx:id="Alma" layoutX="727.0" layoutY="65.0" mnemonicParsing="false" onAction="#insertionSort" text="Ordenar" />
    </children>
 </AnchorPane>
