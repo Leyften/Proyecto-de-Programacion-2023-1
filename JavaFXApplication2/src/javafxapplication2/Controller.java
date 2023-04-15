@@ -21,6 +21,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.transform.Translate;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.shape.Line;
 
 
 
@@ -38,11 +41,13 @@ public class Controller implements Initializable{
     
     ArrayList<Rectangle> contenido = new ArrayList<Rectangle>();
     
+    NumBuilder NumBuilder;
     boolean temp = false;
     
     int posX = 50;
     
     int posY = 250;
+    
     
     @FXML
     private TextField text_usuario;
@@ -62,7 +67,9 @@ public class Controller implements Initializable{
                       this.temp=true;
                   }else{
                       this.anchorPane.getChildren().removeAll(this.contenido);
-                      this.contenido.clear();               
+
+                      this.contenido.clear(); 
+                      
                       crearRect((int )(cantidad-1));
                   }  
             }else{
@@ -73,6 +80,7 @@ public class Controller implements Initializable{
                 alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
                 alert.showAndWait();
             }
+            //fffffffffffffffffffffffffffffffffff
         }catch(NumberFormatException e){
             System.out.println("Valor no valido");
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -87,20 +95,47 @@ public class Controller implements Initializable{
     //Aqui se crea los rectangulos, se queria usar rotacion para dejar en buena posicion los rectangulos, al final no lo use
     public void crearRect(int cantidad){
         RotateTransition rotacion = new RotateTransition();
+        
         for (int i = 0; i <= cantidad; i++) {
             Rectangle caja = new Rectangle(posX+(i*60), posY, 50, rand.nextInt(50) );
+            NumBuilder = new NumBuilder(2, posX+(0*60), posY , 50);
+            /*
+            try { 
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
+            
             rotacion.setNode(caja);
-            rotacion.setDuration(Duration.millis(1));
-            rotacion.setByAngle(180);
-            rotacion.play();
             this.contenido.add(caja);
+            
             anchorPane.getChildren().addAll(this.contenido.get(i));
+  
+            
+            for (int j = 0; j < NumBuilder.getDigitos().size(); j++) {
+
+
+                for (int k = 0; k < NumBuilder.getDigitos().get(j).size(); k++) {
+                    
+                    anchorPane.getChildren().add(NumBuilder.getDigitos().get(j).get(k));
+                    
+                }          
+            }
+      
+           
             this.contenido.get(i).setFill(Color.web("#2191FB"));
+
         }
+        
+
     }
+    
+    
+    
     //Metodo que no use
     private void insertionSort(){        
         for(int i = 0; i < this.contenido.size(); i++){
+
             double valorActual;
             int j = i - 1;
             valorActual=this.contenido.get(i).getHeight();
@@ -120,35 +155,39 @@ public class Controller implements Initializable{
     //Todos los metodos @FXML se usan en la pantalla, este hace el insetion sort y es el que estaba trabajando para usarlo en la animacion
     @FXML
     private void insertionSort2(){
+        
         for(int i = 0; i < this.contenido.size(); i++){
-            //System.out.println("i->"+i);
-            int valorActual;
-            int j = i - 1;
-            valorActual=(int) this.contenido.get(i).getHeight();
-            while(j >= 0 && this.contenido.get(j).getHeight()> valorActual){
-                
-                int k =i;
-                while(k>=0){
-                    desplazamiento(k,j);
-                    k--;
+            if(this.contenido.get(i) instanceof Rectangle){
+                //System.out.println("i->"+i);
+                int valorActual;
+                int j = i - 1;
+                valorActual=(int) this.contenido.get(i).getHeight();
+                while(j >= 0 && this.contenido.get(j).getHeight()> valorActual){
+
+                    int k =i;
+                    while(k>=0){
+                        desplazamiento(k,j);
+                        k--;
+                    }
+
+                    //desplazamientoAislado(i);
+
+                    this.contenido.get(j+1).setHeight(this.contenido.get(j).getHeight());
+                    //desplazamientoLateral(j);
+                    j--;
+                    //2 3 |1|
+                    //  j  i
+                    //2 3 > |1|
+                    //       i
+                    //  j > |1|
+                    //2 >|1| 3
+                    //j 
+                    //1 2 3
                 }
-                
-                //desplazamientoAislado(i);
-               
-                this.contenido.get(j+1).setHeight(this.contenido.get(j).getHeight());
-                //desplazamientoLateral(j);
-                j--;
-                //2 3 |1|
-                //  j  i
-                //2 3 > |1|
-                //       i
-                //  j > |1|
-                //2 >|1| 3
-                //j 
-                //1 2 3
+
+                this.contenido.get(j+1).setHeight(valorActual);
             }
             
-            this.contenido.get(j+1).setHeight(valorActual);
             //desplazamientoReincorporadoH((j+1), i);
            // desplazamientoReincorporadoV(i);
         } 
@@ -157,7 +196,7 @@ public class Controller implements Initializable{
         
     }
     
-    //Solo un metodo de pruebas para crear rectangulos
+    /*Solo un metodo de pruebas para crear rectangulos
     public void crearM(){
         Rectangle caja = new Rectangle(50, 250, 50, (50) );
         caja.setFill(Color.web("#2191FB"));
@@ -168,7 +207,7 @@ public class Controller implements Initializable{
         
         anchorPane.getChildren().addAll(this.contenido);
         
-    }
+    }*/
     //Este metodo tiene la animacion más en general
     public void desplazamiento(/*1*/int i,/*0*/ int j){
         contenido.get(j).setFill(Color.web("#E6FA07"));

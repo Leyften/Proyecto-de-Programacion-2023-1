@@ -11,37 +11,41 @@ import javafx.scene.shape.Line;
 public class NumBuilder {
     ArrayList<ArrayList<Line>> digitos = new ArrayList<>();
     ArrayList<Line> digitosLines = new ArrayList<>();
-
-    public NumBuilder(int num) {
+    int AltNum = 20;
+    //Ancho num: 10 Altura num: 15 
+    
+    public NumBuilder(int num, float x, float y, int ancho) {
+        digitosLines.clear();
         if (num < 10){
             //En caso de que el numero ingresado sea de solo un digito
             
-            digitos.add(Dibujar(num));
-            
-            for(int i = 0; i < digitos.get(0).size(); i++){
-                digitos.get(0).get(i).setStartX((digitos.get(0).get(i).getStartX())-80);
-            }
-            digitosLines.clear();
+            Dibujar(num, x, y, ancho);
+
         }
         else{
-            
+
             int aux = num/10;
-            digitos.add(Dibujar(aux));
-            digitosLines.clear();
-            
-            digitos.add(Dibujar((aux*10)-num));
-            digitos.add(Dibujar(aux));
-            digitosLines.clear();
+            Dibujar(aux, x, y, ancho);
+
+            Dibujar(num-(aux*10), x , y, ancho);
             
         }
-
-        
-
-        
-        
+        /*
+        for(int i = 0; i < digitos.size(); i++){
+            for (int j = 0; j < digitos.get(0).size(); j++) {
+                digitos.get(i).get(j).setStartX(x);
+                digitos.get(i).get(j).setStartY(y);
+                digitos.get(i).get(j).setEndX(x+111);
+                digitos.get(i).get(j).setEndY(y+111);
+            }
+            
+        }*/
+   
     }
 
-    private ArrayList<Line> Dibujar(int op){
+    private void Dibujar(int op, float posX, float posY, int AnchNum){
+        
+        
         Line linea;
         Line linea2;
         Line linea3;
@@ -50,30 +54,37 @@ public class NumBuilder {
         
         switch(op){
             case 1:
-                linea = new Line(0.0f, 50.0f, 80.0f, 0.0f);
-                linea2 = new Line(80.0f, 0.0f, 80.0f, 100.0f);
-               
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
+                linea = new Line(posX, posY+AltNum/2, posX+AnchNum/2, posY);
+                linea2 = new Line(posX+AnchNum/2, posY, posX+AnchNum/2, posY+AltNum);
                 
-                return digitosLines;
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                
+                
+                this.digitos.add(this.digitosLines);
+                
+
+                
+                break;
                 
             case 2:
+                linea = new Line(posX, posY, posX+AnchNum/2, posY);
+                linea2 = new Line(posX+AnchNum/2, posY, posX+AnchNum/2, posY+AltNum/2);
+                linea3 = new Line(posX+AnchNum/2, posY+AltNum/2, posX, posY+AltNum/2);
+                linea4 = new Line(posX, posY+AltNum/2, posX, posY+AltNum);
+                linea5 = new Line(posX, posY+AltNum, posX+AnchNum/2, posY+AltNum);
+
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
+                this.digitosLines.add(linea5);
                 
-                linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
-                linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
-                digitosLines.add(linea5);
+                this.digitos.add(this.digitosLines);
                 
-                return digitosLines; 
+                break;
                 
             case 3:
                 
@@ -82,12 +93,14 @@ public class NumBuilder {
                 linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
                 
-                return digitosLines; 
+                this.digitos.add(this.digitosLines);
+                
+                break;
                 
             case 4: 
                 
@@ -95,12 +108,12 @@ public class NumBuilder {
                 linea2 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                
-                return digitosLines; 
-                
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitos.add(this.digitosLines);
+                break;
+                                
             case 5: 
                 
                 linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
@@ -109,14 +122,15 @@ public class NumBuilder {
                 linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
-                digitosLines.add(linea5);
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
+                this.digitosLines.add(linea5);
                 
-                return digitosLines;
-                
+                this.digitos.add(this.digitosLines);
+                break;
+                                
             case 6: 
                 
                 linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
@@ -125,23 +139,26 @@ public class NumBuilder {
                 linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
-                digitosLines.add(linea5);
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
+                this.digitosLines.add(linea5);
                 
-                return digitosLines; 
+                this.digitos.add(this.digitosLines);
+                
+                break;
+                
             case 7:
                 
                 linea = new Line(0.0f, 0.0f, 80.0f, 0.0f);
                 linea2 = new Line(80.0f, 0.0f, 80.0f, 100.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                
-                return digitosLines; 
-                
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitos.add(this.digitosLines);
+                break;
+
             case 8:
                 
                 linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
@@ -150,13 +167,14 @@ public class NumBuilder {
                 linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
-                digitosLines.add(linea5);
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
+                this.digitosLines.add(linea5);
+                this.digitos.add(this.digitosLines);
+                break;
                 
-                return digitosLines; 
             case 9:
                 
                 linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
@@ -165,13 +183,14 @@ public class NumBuilder {
                 linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea5 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
-                digitosLines.add(linea5);
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
+                this.digitosLines.add(linea5);
+                this.digitos.add(this.digitosLines);
+                break;
                 
-                return digitosLines; 
             case 0:
                 
                 linea = new Line(10.0f, 10.0f, 200.0f, 140.0f);
@@ -179,14 +198,15 @@ public class NumBuilder {
                 linea3 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 linea4 = new Line(10.0f, 10.0f, 200.0f, 140.0f);
                 
-                digitosLines.add(linea);
-                digitosLines.add(linea2);
-                digitosLines.add(linea3);
-                digitosLines.add(linea4);
-
-                return digitosLines; 
+                this.digitosLines.add(linea);
+                this.digitosLines.add(linea2);
+                this.digitosLines.add(linea3);
+                this.digitosLines.add(linea4);
+                this.digitos.add(this.digitosLines);
+                break;
+                
         }
-        return digitosLines;
+
         
     }
     
