@@ -73,7 +73,8 @@ public class Controller implements Initializable{
                       temp=true;
                   }else{
                       anchorPane.getChildren().removeAll(this.contenido);
-                      contenido.clear();               
+                      contenido.clear();  
+                      
                       crearRect((int )(cantidad-1));
                   }  
             }else{
@@ -101,30 +102,26 @@ public class Controller implements Initializable{
             int altura = rand.nextInt(altura_Maxima);
             Rectangle caja = new Rectangle(50,altura);
             caja.setFill(Color.BLUEVIOLET);
-            caja.setTranslateX(i*(50+10));
+            caja.setTranslateX((i+5)*(90+10));
             caja.setTranslateY(altura_Maxima - altura);
             
             contenido.add(caja);
-            anchorPane.getChildren().addAll(contenido.get(i));
+            //anchorPane.getChildren().addAll(contenido.get(i));
             //Arreglo_rectangulos[i]=caja;
             
         }
+        anchorPane.getChildren().addAll(contenido);
     }
     @FXML
     private void insertionSort(){    
         if (minimo >= cantidad) {
-            System.out.println("return");
             return;
         }
         
         Rectangle cajaMinimo = contenido.get(minimo);
-        Rectangle cajaIndice = contenido.get(indice);
+        Rectangle cajaIndice = contenido.get(indice);       
         
-        /*
-        Rectangle cajaMinimo = Arreglo_rectangulos[minimo];
-        Rectangle cajaIndice = Arreglo_rectangulos[indice];*/
-        
-        if (cajaIndice.getHeight() < cajaMinimo.getHeight()) {
+        if (cajaIndice.getHeight() <= cajaMinimo.getHeight()) {
             minimo = indice;
             
             indice++;
@@ -155,6 +152,7 @@ public class Controller implements Initializable{
         cajaIndice.toBack();
 
         cajaMinimo.setFill(Color.RED);
+        //indice++;
 
         insertionSort();
         
@@ -168,7 +166,8 @@ public class Controller implements Initializable{
         transition1.setByX((indice2 - indice1) * (50 + 10));
         TranslateTransition transition2 = new TranslateTransition(Duration.millis(duracion), caja2);
         transition2.setByX((indice1 - indice2) * (50 + 10));
-
+        transition1.setDelay(Duration.millis(1000));
+        transition2.setDelay(Duration.millis(1000));
         transition1.play();
         transition2.play();
         
@@ -178,6 +177,11 @@ public class Controller implements Initializable{
         /*
         Arreglo_rectangulos[indice1] = caja2;
         Arreglo_rectangulos[indice2] = caja1;*/
+    }
+    
+    
+    public void selectionsub(){
+        
     }
     
     @Override
