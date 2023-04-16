@@ -97,8 +97,9 @@ public class Controller implements Initializable{
         RotateTransition rotacion = new RotateTransition();
         
         for (int i = 0; i <= cantidad; i++) {
-            Rectangle caja = new Rectangle(posX+(i*60), posY, 50, rand.nextInt(50) );
-            NumBuilder = new NumBuilder(8, posX+(0*60), posY , 50);
+            int cant = rand.nextInt(50);
+            Rectangle caja = new Rectangle(posX+(i*60), posY, 50, cant );
+            NumBuilder = new NumBuilder(i*11, posX+(i*60)+5, posY , 50);
             /*
             try { 
                 Thread.sleep(100);
@@ -111,15 +112,10 @@ public class Controller implements Initializable{
             
             anchorPane.getChildren().addAll(this.contenido.get(i));
   
-            
+            System.out.println(NumBuilder.getDigitos().size());
             for (int j = 0; j < NumBuilder.getDigitos().size(); j++) {
-
-
-                for (int k = 0; k < NumBuilder.getDigitos().get(j).size(); k++) {
-                    
-                    anchorPane.getChildren().add(NumBuilder.getDigitos().get(j).get(k));
-                    
-                }          
+                anchorPane.getChildren().addAll(NumBuilder.getDigitos().get(j));
+       
             }
       
            
