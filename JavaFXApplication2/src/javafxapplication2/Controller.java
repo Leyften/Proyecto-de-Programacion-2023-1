@@ -28,33 +28,25 @@ import javafx.animation.Interpolator;
 public class Controller implements Initializable{
     
     double cantidad=0;
+    
     int altura_Maxima=50;
-    //int ancho;
-    //int espacio;
-    int duracion = 500;
-    //int ARRAY_SIZE = 10; //cantidad
-    
-    Rectangle[] Arreglo_rectangulos = new Rectangle[100];
-    
+    int anchoC=50;
+    int espacio=10;
+    int duracion = 500;    
     int minimo=0;
     int indice=0;
+    int posX = 50;
+    int posY = 250;
+    
+    boolean temp = false;    
+    
+    Random rand = new Random();    
+    ArrayList<Rectangle> contenido = new ArrayList<Rectangle>();
     
     
     
     @FXML
     private AnchorPane anchorPane;
-
-    
-
-    Random rand = new Random();
-    
-    ArrayList<Rectangle> contenido = new ArrayList<Rectangle>();
-    
-    boolean temp = false;
-    
-    int posX = 50;
-    int posY = 250;
-    
     @FXML
     private TextField text_usuario;
     @FXML
@@ -78,32 +70,30 @@ public class Controller implements Initializable{
                       crearRect((int )(cantidad-1));
                   }  
             }else{
-                System.out.println("Valor no valido");
+                ventanaERROR();
+            }
+        }catch(NumberFormatException e){
+            ventanaERROR();
+        }
+        
+    }
+    
+    public void ventanaERROR(){
+        System.out.println("Valor no valido");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText(null);
                 alert.setTitle("ERROR");
                 alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
                 alert.showAndWait();
-            }
-        }catch(NumberFormatException e){
-            System.out.println("Valor no valido");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("ERROR");
-            alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero");
-            alert.showAndWait();
-        }
-        
     }
     
-    //Aqui se crea los rectangulos, se queria usar rotacion para dejar en buena posicion los rectangulos, al final no lo use
     public void crearRect(int cantidad){       
         for (int i = 0; i <= cantidad; i++) {
             int altura = rand.nextInt(altura_Maxima);
-            Rectangle caja = new Rectangle(50,altura);
+            Rectangle caja = new Rectangle(anchoC,altura);
             caja.setFill(Color.BLUEVIOLET);
-            caja.setTranslateX((i+5)*(90+10));
-            caja.setTranslateY(altura_Maxima - altura);
+            caja.setTranslateX((i)*(posX+espacio));
+            caja.setTranslateY(250+(altura_Maxima - altura));
             
             contenido.add(caja);
             //anchorPane.getChildren().addAll(contenido.get(i));
@@ -152,7 +142,7 @@ public class Controller implements Initializable{
         cajaIndice.toBack();
 
         cajaMinimo.setFill(Color.RED);
-        //indice++;
+        minimo++;
 
         insertionSort();
         
@@ -163,9 +153,9 @@ public class Controller implements Initializable{
         //Rectangle caja2 = Arreglo_rectangulos[indice2];
 
         TranslateTransition transition1 = new TranslateTransition(Duration.millis(duracion), caja1);
-        transition1.setByX((indice2 - indice1) * (50 + 10));
+        transition1.setByX((indice2 - indice1) * (posX + espacio));
         TranslateTransition transition2 = new TranslateTransition(Duration.millis(duracion), caja2);
-        transition2.setByX((indice1 - indice2) * (50 + 10));
+        transition2.setByX((indice1 - indice2) * (posX + espacio));
         transition1.setDelay(Duration.millis(1000));
         transition2.setDelay(Duration.millis(1000));
         transition1.play();
@@ -178,12 +168,7 @@ public class Controller implements Initializable{
         Arreglo_rectangulos[indice1] = caja2;
         Arreglo_rectangulos[indice2] = caja1;*/
     }
-    
-    
-    public void selectionsub(){
         
-    }
-    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {/*
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), e->{
