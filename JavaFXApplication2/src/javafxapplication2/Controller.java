@@ -218,12 +218,12 @@ public class Controller implements Initializable {
         H1.setNode(contenido.get(indiceJ));
         H1.setDuration(Duration.millis(500));
         
-        contenido.get(j).setFill(Color.web("#E6FA07"));
+        //contenido.get(j).setFill(Color.web("#E6FA07"));
         //double desplazamientoH= ((contenidoC.get(j+1).getX())-(contenidoC.get(j).getX()));
         double desplazamientoH = (ancho+10);
         //System.out.println("DesplazamientoH "+desplazamientoH);
         H1.setByX(desplazamientoH);
-        contenido.get(j).setFill(Color.web("#2191FB"));
+        //contenido.get(j).setFill(Color.web("#2191FB"));
         
         //System.out.println("H1 indices "+indices);
         indicesSub.set((j+1),indiceJ);
