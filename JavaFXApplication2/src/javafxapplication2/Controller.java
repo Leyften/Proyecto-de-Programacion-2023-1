@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.transform.Translate;
 import java.util.Collections;
 import javafx.animation.SequentialTransition;
+import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
 
 public class Controller implements Initializable {
@@ -66,6 +67,15 @@ public class Controller implements Initializable {
                       
                       this.anchorPane.getChildren().removeAll(this.contenido);
                       this.anchorPane.getChildren().removeAll(this.NumBuilder.digitos);
+                      for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+                          if (this.anchorPane.getChildren().get(i).getClass() == TextField.class || this.anchorPane.getChildren().get(i).getClass() == Button.class || this.anchorPane.getChildren().get(i).getClass() == Label.class){
+                          }else {
+                              for (int j = 0; j < 1; j++) {
+                                  this.anchorPane.getChildren().removeAll(this.anchorPane.getChildren().get(i));
+                              }
+                              
+                          }
+                    }
                       
                       this.contenido.clear();    
                       this.contenidoC.clear();
@@ -102,7 +112,7 @@ public class Controller implements Initializable {
         for (int i = 0; i <= cantidad; i++) {
             
             int random = rand.nextInt(100);
-            NumBuilder = new NumBuilder(random, 20+((10+ancho)*i)+5, (posY-random)-50 , 50);
+            NumBuilder = new NumBuilder(random, 20+((10+ancho)*i)+5, (posY-random)-(ancho*95)/100 , ancho);
             Rectangle caja = new Rectangle((20+((10+ancho)*i))/*(posX+(i*60))*/, (posY-random), ancho, random);
             caja.setFill(Color.web("#83072D"));
 
@@ -110,10 +120,9 @@ public class Controller implements Initializable {
             this.contenidoC.add(caja);
             anchorPane.getChildren().addAll(this.contenido.get(i));
    
-            System.out.println(NumBuilder.getDigitos().size());
             
             for (int j = 0; j < NumBuilder.getDigitos().size(); j++) {
-                anchorPane.getChildren().addAll(NumBuilder.getDigitos().get(j));
+                this.anchorPane.getChildren().addAll(NumBuilder.getDigitos().get(j));
        
             }
             indices.add(i);
