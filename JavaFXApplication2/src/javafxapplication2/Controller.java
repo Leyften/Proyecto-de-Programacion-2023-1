@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.transform.Translate;
 import java.util.Collections;
 import javafx.animation.SequentialTransition;
+import javafx.scene.shape.Line;
 
 public class Controller implements Initializable {
 
@@ -34,8 +35,10 @@ public class Controller implements Initializable {
     ArrayList<Rectangle> contenidoC = new ArrayList<Rectangle>();
     ArrayList               indices = new ArrayList();
     ArrayList               indicesSub = new ArrayList();
+    
     SequentialTransition ANIMACIONES = new SequentialTransition ();
     
+    NumBuilder NumBuilder;
     boolean temp = false;
     boolean temp2 = false;
     
@@ -60,7 +63,10 @@ public class Controller implements Initializable {
                       this.temp=true;                                            
                       this.temp2=false;
                   }else{
+                      
                       this.anchorPane.getChildren().removeAll(this.contenido);
+                      this.anchorPane.getChildren().removeAll(this.NumBuilder.digitos);
+                      
                       this.contenido.clear();    
                       this.contenidoC.clear();
                       this.indices.clear();
@@ -88,19 +94,32 @@ public class Controller implements Initializable {
     //Aqui se crea los rectangulos, se queria usar rotacion para dejar en buena posicion los rectangulos, al final no lo use
     public void crearRect(int cantidad) {
         RotateTransition rotacion = new RotateTransition();
+        
         //1280/720
         //ancho = ((760-((cantidad+1)*10))/(cantidad+1));
         ancho = ((1240-((cantidad+1)*10))/(cantidad+1));
+
         for (int i = 0; i <= cantidad; i++) {
+            
             int random = rand.nextInt(100);
+            NumBuilder = new NumBuilder(random, 20+((10+ancho)*i)+5, (posY-random)-50 , 50);
             Rectangle caja = new Rectangle((20+((10+ancho)*i))/*(posX+(i*60))*/, (posY-random), ancho, random);
             caja.setFill(Color.web("#83072D"));
+
             this.contenido.add(caja);
             this.contenidoC.add(caja);
             anchorPane.getChildren().addAll(this.contenido.get(i));
+   
+            System.out.println(NumBuilder.getDigitos().size());
+            
+            for (int j = 0; j < NumBuilder.getDigitos().size(); j++) {
+                anchorPane.getChildren().addAll(NumBuilder.getDigitos().get(j));
+       
+            }
             indices.add(i);
             indicesSub.add(i);
         }
+        
     }
 
     
