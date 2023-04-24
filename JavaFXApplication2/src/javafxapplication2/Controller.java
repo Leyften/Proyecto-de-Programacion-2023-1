@@ -50,6 +50,7 @@ public class Controller implements Initializable {
     
     @FXML
     private TextField text_usuario;
+    
     @FXML
     private Button Alma;
 
@@ -67,15 +68,7 @@ public class Controller implements Initializable {
                       
                       this.anchorPane.getChildren().removeAll(this.contenido);
                       this.anchorPane.getChildren().removeAll(this.NumBuilder.digitos);
-                      for (int i = 0; i < anchorPane.getChildren().size(); i++) {
-                          if (this.anchorPane.getChildren().get(i).getClass() == TextField.class || this.anchorPane.getChildren().get(i).getClass() == Button.class || this.anchorPane.getChildren().get(i).getClass() == Label.class){
-                          }else {
-                              for (int j = 0; j < 1; j++) {
-                                  this.anchorPane.getChildren().removeAll(this.anchorPane.getChildren().get(i));
-                              }
-                              
-                          }
-                    }
+                      
                       
                       this.contenido.clear();    
                       this.contenidoC.clear();

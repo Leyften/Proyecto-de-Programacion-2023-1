@@ -17,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
     // cargar la vista FXML
-    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("Ventana.fxml"));
     InputStream stream = new FileInputStream("C:\\Users\\pablo\\OneDrive\\Escritorio\\PP2\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\imagen\\fondomario.png");
 
     // crear un objeto ImageView con la imagen deseada

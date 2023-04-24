@@ -8,30 +8,41 @@ import java.util.ArrayList;
 import javafx.scene.shape.Line;
 
 public class NumBuilder {
-    ArrayList<ArrayList<Line>> digitos = new ArrayList<>();
-    ArrayList<Line> digitosLines = new ArrayList<>();
-    int AltNum;
+    //ArrayList que continen el numero compuesto
+    public ArrayList<ArrayList<Line>> digitos = new ArrayList<>();
+    //ArrayList de las lineas que componen el/los numeros
+    private ArrayList<Line> digitosLines = new ArrayList<>();
+    
+    //variables globales para estandar de dimensiones
+    
+    //Altura de los numeros
+    float AltNum;
+    //Espacio entre numeros
     float space;
-    //Ancho num: 10 Altura num: 15 
     
     public NumBuilder(int num, float x, float y, int ancho) {
+        //Clean para ocupar el "molde"
         digitosLines.clear();
+        //Calculo de espacio y ancho
         this.space = (ancho*5)/100;
+        this.AltNum = ancho;
         ancho = (ancho*90)/100;
         
-        this.AltNum = ancho;
+        //Caso de un solo digito
         if (num < 10){
-            //En caso de que el numero ingresado sea de solo un digito
+
             Dibujar(num, x, y, ancho);
 
         }
+        
+        //Caso de 2 digitos
         else{
-
+            //aux para tener la decena
             int aux = num/10;
-
+            
+            //Dibuja el primer digito
             Dibujar(aux, x, y, ancho);
-
-
+            //Dibuja el siguiente, pero respetando el espacio del anterios
             Dibujar(num-(aux*10), x+ancho/2 , y, ancho);
             
         }
@@ -39,21 +50,25 @@ public class NumBuilder {
    
     }
 
-    private void Dibujar(int op, float posX, float posY, int AnchNum){
-        
-        
+    private void Dibujar(int op, float posX, float posY, float AnchNum){
+        //posibles lineas a ocupar, se llaman aca, para no repetir las llamadas
         Line linea;
         Line linea2;
         Line linea3;
         Line linea4;
         Line linea5;
+        
+        //Contenedor de los Lines que forman un digito
         digitosLines = new ArrayList<>();
+        
+        //switch en base al digito necesitado
         switch(op){
+            
             case 1:
-                
+                //Lineas que componen el numero
                 linea = new Line(posX, posY+AltNum/2, posX+AnchNum/2-space, posY);
                 linea2 = new Line(posX+AnchNum/2-space, posY, posX+AnchNum/2-space, posY+AltNum);
-                
+                //
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
                 
