@@ -52,6 +52,8 @@ public class Controller implements Initializable{
     private TextField text_usuario;
     @FXML
     private Button Alma;
+    @FXML
+    private Button burbuja;
     
     
 
@@ -87,7 +89,7 @@ public class Controller implements Initializable{
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("ERROR");
-        alert.setContentText("La cantidad deseada debe ser un numero entero mayor a cero entre 16 a 64");
+        alert.setContentText("La cantidad ingresada debe ser un numero entero mayor a cero entre 16 a 64");
         alert.showAndWait();
     }
     
@@ -144,7 +146,7 @@ public class Controller implements Initializable{
         //System.out.println(indices);
         //System.out.println("V1 "+indice);
         V1.setNode(contenido.get(indice));
-        V1.setDuration(Duration.millis(500));
+        V1.setDuration(Duration.millis(100));
         
         V1.setByY(-100);
         //V1.setByY(100);
@@ -157,7 +159,7 @@ public class Controller implements Initializable{
     
     void animacionV2(int i, int j){
         TranslateTransition transicion = new TranslateTransition();
-        transicion.setDuration(Duration.millis(500)); 
+        transicion.setDuration(Duration.millis(100)); 
         
         int indiceI = (int) indices.get(i);
         //System.out.println(indices);
@@ -176,7 +178,7 @@ public class Controller implements Initializable{
         
         TranslateTransition transicion2 = new TranslateTransition();
         transicion2.setNode(contenido.get(indiceI));
-        transicion2.setDuration(Duration.millis(500));
+        transicion2.setDuration(Duration.millis(100));
         
         transicion2.setByY(100);
         //transicion2.setByY(-100);
@@ -200,7 +202,7 @@ public class Controller implements Initializable{
         int indiceJ = (int) indicesSub.get(j);
         //System.out.println("H1 indicesSub "+indicesSub);
         H1.setNode(contenido.get(indiceJ));
-        H1.setDuration(Duration.millis(500));
+        H1.setDuration(Duration.millis(100));
         
         contenido.get(j).setFill(Color.web("#E6FA07"));
         //double desplazamientoH= ((contenidoC.get(j+1).getX())-(contenidoC.get(j).getX()));
@@ -225,7 +227,34 @@ public class Controller implements Initializable{
         }
     }
        
-
+    @FXML
+    public void burbujaOP(){
+            for (int i = 1; i < contenidoC.size(); i++) {
+                boolean intercambio = false;
+                for (int j = 0; (j < ((contenidoC.size()-i))); j++) {
+                    if((contenidoC.get(j).getHeight())>(contenidoC.get(j+1).getHeight())){
+                        animacionV1(j+1);
+                        Rectangle actual = contenidoC.get(j);
+                        
+                        animacionH1(j);
+                        contenidoC.set((j), contenidoC.get(j+1));
+                        
+                        animacionV2(j+1,(j));
+                        contenidoC.set((j+1), actual);
+                        intercambio = true;
+                        
+                    }
+                }
+                if(!intercambio){
+                    break;
+                }
+            }
+        ANIMACIONES.play();
+    }
+    
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {/*
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), e->{
