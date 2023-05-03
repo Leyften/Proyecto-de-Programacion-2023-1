@@ -36,7 +36,7 @@ public class Controller implements Initializable {
     ArrayList<Rectangle> contenidoC = new ArrayList<Rectangle>();
     ArrayList               indices = new ArrayList();
     ArrayList               indicesSub = new ArrayList();
-    
+    ArrayList<Line>             lines = new ArrayList<Line>();
     SequentialTransition ANIMACIONES = new SequentialTransition ();
     
     NumBuilder NumBuilder;
@@ -67,9 +67,12 @@ public class Controller implements Initializable {
                   }else{
                       
                       this.anchorPane.getChildren().removeAll(this.contenido);
-                      this.anchorPane.getChildren().removeAll(this.NumBuilder.digitos);
+
+                     this.anchorPane.getChildren().removeAll(this.lines);
                       
+       
                       
+                      this.lines.clear();
                       this.contenido.clear();    
                       this.contenidoC.clear();
                       this.indices.clear();
@@ -105,6 +108,7 @@ public class Controller implements Initializable {
         for (int i = 0; i <= cantidad; i++) {
             
             int random = rand.nextInt(100);
+            System.out.println(random);
             NumBuilder = new NumBuilder(random, 20+((10+ancho)*i)+5, (posY-random)-(ancho*95)/100 , ancho);
             Rectangle caja = new Rectangle((20+((10+ancho)*i))/*(posX+(i*60))*/, (posY-random), ancho, random);
             caja.setFill(Color.web("#83072D"));
@@ -115,12 +119,19 @@ public class Controller implements Initializable {
    
             
             for (int j = 0; j < NumBuilder.getDigitos().size(); j++) {
-                this.anchorPane.getChildren().addAll(NumBuilder.getDigitos().get(j));
+                this.lines.addAll(NumBuilder.getDigitos().get(j));
+
+                //this.anchorPane.getChildren().addAll(NumBuilder.getDigitos().get(j));
        
             }
+            
             indices.add(i);
             indicesSub.add(i);
+            
         }
+        this.anchorPane.getChildren().addAll(lines);
+        
+        
         
     }
 

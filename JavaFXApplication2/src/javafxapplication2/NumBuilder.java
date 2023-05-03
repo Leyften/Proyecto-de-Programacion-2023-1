@@ -21,6 +21,7 @@ public class NumBuilder {
     float space;
     
     public NumBuilder(int num, float x, float y, int ancho) {
+        y -= 10;
         //Clean para ocupar el "molde"
         digitosLines.clear();
         //Calculo de espacio y ancho
@@ -202,7 +203,7 @@ public class NumBuilder {
                 
             case 0:
                 
-                linea = new Line(posX, posY, posX+AnchNum/2-10, posY);
+                linea = new Line(posX, posY, posX+AnchNum/2-space, posY);
                 linea2 = new Line(posX+AnchNum/2-space, posY, posX+AnchNum/2-space, posY+AltNum);
                 linea3 = new Line(posX+AnchNum/2-space, posY+AltNum, posX, posY+AltNum);
                 linea4 = new Line(posX, posY+AltNum, posX, posY);
