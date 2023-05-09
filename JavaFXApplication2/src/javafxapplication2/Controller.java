@@ -23,9 +23,13 @@ import javafx.scene.transform.Translate;
 import java.util.Collections;
 import javafx.animation.SequentialTransition;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 public class Controller implements Initializable {
+    
+    grua migrua = new grua();
+    Pane gruacreada = migrua.getPane();
 
     @FXML
     private AnchorPane anchorPane;
