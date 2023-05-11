@@ -63,8 +63,10 @@ public class Controller implements Initializable {
             //int cantidad = (int) (this.text_usuario.getText());
             double cantidad = Double.parseDouble(this.text_usuario.getText());
             if ((cantidad >= 16) && (cantidad <= 64) && ((cantidad % 1) == 0)) {
+                
                 if (this.temp == false) {
                     crearRect((int) (cantidad - 1));
+                    
                     this.temp = true;
                     this.temp2 = false;
                 } else {
@@ -116,7 +118,9 @@ public class Controller implements Initializable {
 
             this.contenido.add(caja);
             this.contenidoC.add(caja);
+            
             anchorPane.getChildren().addAll(this.contenido.get(i));
+            anchorPane.getChildren().add(gruacreada);
 
             for (int j = 0; j < NumBuilder.getDigitos().size(); j++) {
                 this.lines.addAll(NumBuilder.getDigitos().get(j));
