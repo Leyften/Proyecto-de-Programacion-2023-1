@@ -47,6 +47,8 @@ public class Controller implements Initializable{
     int posY = 550;
     int ancho=0;
     
+    int espacio_reservado = 0;
+    
     
     @FXML
     private TextField text_usuario;
@@ -95,10 +97,10 @@ public class Controller implements Initializable{
     
     //Aqui se crea los rectangulos, se queria usar rotacion para dejar en buena posicion los rectangulos, al final no lo use
     public void crearRect(int cantidad){
-        ancho = ((760-((cantidad+1)*10))/(cantidad+1));
+        ancho = ((700-((cantidad+1)*10))/(cantidad+1));
         for (int i = 0; i <= cantidad; i++) {
             int random = rand.nextInt(100);
-            Rectangle caja = new Rectangle((20+((10+ancho)*i))/*(posX+(i*60))*/, (posY-random), ancho, random);
+            Rectangle caja = new Rectangle((20+((10+ancho)*i)), (posY-random), ancho, random);
             caja.setFill(Color.web("#2191FB"));
             this.contenido.add(caja);
             this.contenidoC.add(caja);
@@ -106,6 +108,7 @@ public class Controller implements Initializable{
             indices.add(i);
             indicesSub.add(i);
         }
+        espacio_reservado = 800-ancho;
     }
     
 
@@ -233,13 +236,15 @@ public class Controller implements Initializable{
                 boolean intercambio = false;
                 for (int j = 0; (j < ((contenidoC.size()-i))); j++) {
                     if((contenidoC.get(j).getHeight())>(contenidoC.get(j+1).getHeight())){
-                        animacionV1(j+1);
+                        //animacionV1(j+1);
+                        BURBUJA_animacionVH(j+1);
                         Rectangle actual = contenidoC.get(j);
                         
                         animacionH1(j);
                         contenidoC.set((j), contenidoC.get(j+1));
                         
-                        animacionV2(j+1,(j));
+                        //animacionV2(j+1,(j));
+                        BURBUJA_animacionVH2(j+1,(j));
                         contenidoC.set((j+1), actual);
                         intercambio = true;
                         
@@ -252,6 +257,68 @@ public class Controller implements Initializable{
         ANIMACIONES.play();
     }
     
+    
+    public void BURBUJA_animacionVH(int i){
+        TranslateTransition V1 = new TranslateTransition();
+            int indice = (int) indices.get(i);
+            V1.setNode(contenido.get(indice));
+            V1.setDuration(Duration.millis(100));
+
+            V1.setByY(-100);
+            ANIMACIONES.getChildren().add(V1);
+        
+        
+        TranslateTransition H1 = new TranslateTransition();
+            H1.setNode(contenido.get(indice));
+            H1.setDuration(Duration.millis(100));
+
+            int posicion_actual = (20+((10+ancho)*i));
+            H1.setByX(espacio_reservado-posicion_actual);
+            ANIMACIONES.getChildren().add(H1);
+        
+        
+        TranslateTransition V2 = new TranslateTransition();
+            V2.setNode(contenido.get(indice));
+            V2.setDuration(Duration.millis(100));
+
+            V2.setByY(100);
+            ANIMACIONES.getChildren().add(V2);
+    }
+    
+    
+    public void BURBUJA_animacionVH2(int i, int j){
+        int indiceI = (int) indices.get(i);
+        int indiceJ = (int) indicesSub.get(j);
+        
+        
+        TranslateTransition V1 = new TranslateTransition();
+            V1.setDuration(Duration.millis(100)); 
+            V1.setNode(contenido.get(indiceI)); 
+
+            V1.setByY(-100);
+            ANIMACIONES.getChildren().add(V1);
+        
+        
+        TranslateTransition H1 = new TranslateTransition();
+            H1.setDuration(Duration.millis(100)); 
+            H1.setNode(contenido.get(indiceI)); 
+
+            double desplazamientoH = (espacio_reservado-contenido.get(j).getX());
+            H1.setByX(-desplazamientoH);
+            ANIMACIONES.getChildren().add(H1);    
+        
+        
+        TranslateTransition V2 = new TranslateTransition();
+            V2.setDuration(Duration.millis(100)); 
+            V2.setNode(contenido.get(indiceI)); 
+
+            V2.setByY(100);
+            ANIMACIONES.getChildren().add(V2);
+        
+        
+        indicesSub.set(j, indiceI);
+        reordenar();
+    }
     
     
     
