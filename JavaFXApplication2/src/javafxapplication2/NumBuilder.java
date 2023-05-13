@@ -25,7 +25,7 @@ public class NumBuilder {
         //Clean para ocupar el "molde"
         digitosLines.clear();
         //Calculo de espacio y ancho
-        this.space = (ancho*5)/100;
+        this.space = (ancho*10)/100;
         this.AltNum = ancho;
         ancho = (ancho*90)/100;
         
