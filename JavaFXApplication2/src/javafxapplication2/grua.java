@@ -1,17 +1,15 @@
-
 package javafxapplication2;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.util.ArrayList;
 
-public class grua {
+public class Grua {
 
     private ArrayList<Node> creargrua;
 
-    public grua() {
+    public Grua() {
         // Crear un círculo para el gancho
         Line gancho1 = new Line(50, 500, 58,505);
         Line gancho2 = new Line(58, 505, 58,513);
