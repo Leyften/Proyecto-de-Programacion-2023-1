@@ -28,10 +28,13 @@ import javafx.animation.SequentialTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
 
 
 
 public class Controller implements Initializable{
+    Grua migrua = new Grua();
+    Pane grua = migrua.getPane();
 
     @FXML
     private AnchorPane anchorPane;
@@ -155,10 +158,11 @@ public class Controller implements Initializable{
             this.contenido.add(caja);
             this.contenidoC.add(caja);
             anchorPane.getChildren().addAll(this.contenido.get(i));
+            
             indices.add(i);
             indicesSub.add(i);
         }
-        
+        anchorPane.getChildren().addAll(grua);
         this.lista_ordenada=false;
     }
     
