@@ -33,8 +33,7 @@ import javafx.scene.layout.Pane;
 
 
 public class Controller implements Initializable{
-    Grua migrua = new Grua();
-    Pane grua = migrua.getPane();
+ 
 
     @FXML
     private AnchorPane anchorPane;
@@ -46,6 +45,7 @@ public class Controller implements Initializable{
     ArrayList               indices = new ArrayList();
     ArrayList               indicesSub = new ArrayList();
     SequentialTransition ANIMACIONES = new SequentialTransition ();
+    private Grua migrua;
     
     boolean temp = false;
     boolean lista_ordenada = false;
@@ -93,6 +93,8 @@ public class Controller implements Initializable{
                       this.temp=true;                                            
                       //this.temp2=false;                      
                   }else{
+                      this.anchorPane.getChildren().remove(migrua);
+                      this.migrua.eliminarGrua();
                       this.anchorPane.getChildren().removeAll(this.contenido);
                       this.contenido.clear();    
                       this.contenidoC.clear();
@@ -151,6 +153,8 @@ public class Controller implements Initializable{
         ancho = ((1025-sangria-((cantidad+4)*entre_espacio))/(cantidad+3));
         espacio_reservado = 1025-(ancho);
         espacio_reservadoI = sangria+ancho+10;
+        migrua = new Grua(espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*0));
+        Pane grua = migrua.getPane();
         for (int i = 0; i <= cantidad; i++) {
             int random = rand.nextInt(100);
             Rectangle caja = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*i)), (posY-random), ancho, random);

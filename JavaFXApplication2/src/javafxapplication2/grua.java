@@ -9,16 +9,16 @@ public class Grua {
 
     private ArrayList<Node> creargrua;
 
-    public Grua() {
+    public Grua(int par) {
         // Crear un círculo para el gancho
-        Line gancho1 = new Line(50, 500, 58,505);
-        Line gancho2 = new Line(58, 505, 58,513);
-        Line gancho3 = new Line(58, 513, 50,518);
-        Line gancho4 = new Line(50, 518, 42,513);
-        Line gancho5 = new Line(42, 513, 42,506);
+        Line gancho1 = new Line(par, 500, par+8,505);
+        Line gancho2 = new Line(par+8, 505, par+8,513);
+        Line gancho3 = new Line(par+8, 513, par,518);
+        Line gancho4 = new Line(par, 518, par-8,513);
+        Line gancho5 = new Line(par-8, 513, par-8,506);
 
         // Crear una línea para la cuerda
-        Line cuerda = new Line(50, 60, 50,500);
+        Line cuerda = new Line(par, 60, par,500);
 
         // Crear una instancia de ArrayList
         creargrua = new ArrayList<>();
@@ -39,4 +39,9 @@ public class Grua {
 
         return pane;
     }
+    
+    public void eliminarGrua() {
+        creargrua.clear();
+    }
+    
 }
