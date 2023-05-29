@@ -46,9 +46,6 @@ public class Controller implements Initializable{
     ArrayList               indicesSub = new ArrayList();
     SequentialTransition ANIMACIONES = new SequentialTransition ();
     
-    private Grua migrua;
-    private Pane grua;
-    
     boolean temp = false;
     boolean lista_ordenada = false;
     boolean en_reversa = false;/**/
@@ -56,7 +53,7 @@ public class Controller implements Initializable{
     
     
     int posX = 50;
-    int posY = 550;
+    int posY = 625;
     int ancho=0;
     int sangria=30;
     int entre_espacio=10;
@@ -95,9 +92,6 @@ public class Controller implements Initializable{
                       this.temp=true;                                            
                       //this.temp2=false;                      
                   }else{        
-                      this.anchorPane.getChildren().remove(grua);
-                      this.anchorPane.getChildren().remove(migrua);
-                      this.migrua.eliminarGrua();
                       this.anchorPane.getChildren().removeAll(this.contenido);
                       this.contenido.clear();    
                       this.contenidoC.clear();
@@ -156,8 +150,6 @@ public class Controller implements Initializable{
         ancho = ((1025-sangria-((cantidad+4)*entre_espacio))/(cantidad+3));
         espacio_reservado = 1025-(ancho);
         espacio_reservadoI = sangria+ancho+10;     
-        migrua = new Grua(espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*0));
-        grua = migrua.getPane();
         for (int i = 0; i <= cantidad; i++) {
             int random = rand.nextInt(100);
             Rectangle caja = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*i)), (posY-random), ancho, random);
@@ -169,7 +161,6 @@ public class Controller implements Initializable{
             indices.add(i);
             indicesSub.add(i);
         }
-        anchorPane.getChildren().addAll(grua);
         this.lista_ordenada=false;
     }
     
