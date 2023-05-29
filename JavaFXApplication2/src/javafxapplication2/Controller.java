@@ -70,7 +70,7 @@ public class Controller implements Initializable{
     
     
     int posX = 50;
-    int posY = 550;
+    int posY = 625;
     int ancho=0;
     int sangria=30;
     int entre_espacio=10;
