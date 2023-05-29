@@ -1,0 +1,6 @@
+Link a tablero Kanban.
+	https://trello.com/invite/b/Mf0GbZTc/ATTIafcb99904d72a68cbcedb5d71afb0998ABF82E60/pp231-tercera-y-ultima
+Link a respositorio GitHub.
+	https://github.com/Leyften/Proyecto-de-Programacion-2023-1
+Link a video de demostración (Youtube, Onedrive, etc.).
+	https://youtu.be/JIwwyvBN5GY
