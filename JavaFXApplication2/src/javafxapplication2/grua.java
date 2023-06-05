@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Grua {
+
     Rectangle base_grua;
     Rectangle iman_grua;
     Line cuerda_grua;
@@ -28,51 +29,47 @@ public class Grua {
 
     public Grua() {
     }
-    
-    
-    public ParallelTransition  DESPLAZAMIENTOH(Duration time ,double desplazamientoH){
+
+    public ParallelTransition DESPLAZAMIENTOH(Duration time, double desplazamientoH) {
         TranslateTransition DESPLAZAMIENTOH_base_grua = new TranslateTransition();
-            DESPLAZAMIENTOH_base_grua.setNode(base_grua);
-            DESPLAZAMIENTOH_base_grua.setDuration(time);            
-            DESPLAZAMIENTOH_base_grua.setByX(desplazamientoH);
-            
+        DESPLAZAMIENTOH_base_grua.setNode(base_grua);
+        DESPLAZAMIENTOH_base_grua.setDuration(time);
+        DESPLAZAMIENTOH_base_grua.setByX(desplazamientoH);
+
         TranslateTransition DESPLAZAMIENTOH_iman_grua = new TranslateTransition();
-            DESPLAZAMIENTOH_iman_grua.setNode(iman_grua);
-            DESPLAZAMIENTOH_iman_grua.setDuration(time);            
-            DESPLAZAMIENTOH_iman_grua.setByX(desplazamientoH);
-            
+        DESPLAZAMIENTOH_iman_grua.setNode(iman_grua);
+        DESPLAZAMIENTOH_iman_grua.setDuration(time);
+        DESPLAZAMIENTOH_iman_grua.setByX(desplazamientoH);
+
         TranslateTransition DESPLAZAMIENTOH_cuerda_grua = new TranslateTransition();
-            DESPLAZAMIENTOH_cuerda_grua.setNode(cuerda_grua);
-            DESPLAZAMIENTOH_cuerda_grua.setDuration(time);            
-            DESPLAZAMIENTOH_cuerda_grua.setByX(desplazamientoH);       
-        
-        
-        ParallelTransition  DESPLAZAMIENTOH = new ParallelTransition ();
+        DESPLAZAMIENTOH_cuerda_grua.setNode(cuerda_grua);
+        DESPLAZAMIENTOH_cuerda_grua.setDuration(time);
+        DESPLAZAMIENTOH_cuerda_grua.setByX(desplazamientoH);
+
+        ParallelTransition DESPLAZAMIENTOH = new ParallelTransition();
         DESPLAZAMIENTOH.getChildren().addAll(DESPLAZAMIENTOH_base_grua, DESPLAZAMIENTOH_iman_grua, DESPLAZAMIENTOH_cuerda_grua);
         return DESPLAZAMIENTOH;
     }
-    
-    public ParallelTransition  DESPLAZAMIENTOV(Duration time, double desplazamientoV, double caja_posY){
+
+    public ParallelTransition DESPLAZAMIENTOV(Duration time, double desplazamientoV, double caja_posY) {
         TranslateTransition DESPLAZAMIENTOV_iman_grua = new TranslateTransition();
-            DESPLAZAMIENTOV_iman_grua.setNode(iman_grua);
-            DESPLAZAMIENTOV_iman_grua.setDuration(time);
-            DESPLAZAMIENTOV_iman_grua.setByY(desplazamientoV);
-                Timeline DESPLAZAMIENTOV_cuerda_grua = stretchLine(time, caja_posY);
-        
-        
-        ParallelTransition  DESPLAZAMIENTOV = new ParallelTransition ();
-            DESPLAZAMIENTOV.getChildren().addAll(DESPLAZAMIENTOV_iman_grua, DESPLAZAMIENTOV_cuerda_grua);
+        DESPLAZAMIENTOV_iman_grua.setNode(iman_grua);
+        DESPLAZAMIENTOV_iman_grua.setDuration(time);
+        DESPLAZAMIENTOV_iman_grua.setByY(desplazamientoV);
+        Timeline DESPLAZAMIENTOV_cuerda_grua = stretchLine(time, caja_posY);
+
+        ParallelTransition DESPLAZAMIENTOV = new ParallelTransition();
+        DESPLAZAMIENTOV.getChildren().addAll(DESPLAZAMIENTOV_iman_grua, DESPLAZAMIENTOV_cuerda_grua);
         return DESPLAZAMIENTOV;
-    }    
-    
-    
+    }
+
     private Timeline stretchLine(Duration time, double targetY) {
-        double startY = cuerda_grua.getStartY();        
+        double startY = cuerda_grua.getStartY();
         KeyValue keyValueY = new KeyValue(cuerda_grua.endYProperty(), targetY);
         KeyFrame keyFrameY = new KeyFrame(time, keyValueY);
         Timeline timeline = new Timeline(keyFrameY);
         cuerda_grua.setEndY(startY);
-        
+
         return timeline;
     }
 
@@ -131,13 +128,5 @@ public class Grua {
     public void setTempY(double tempY) {
         this.tempY = tempY;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
