@@ -29,6 +29,8 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.shape.Line;
 
@@ -48,25 +50,14 @@ public class Controller implements Initializable{
     
     SequentialTransition ANIMACIONES = new SequentialTransition ();
     
-    Rectangle base_grua1;
-    Rectangle iman_grua1;
-    Line cuerda_grua1;
-    double Xbase_grua1;
-    double Yiman_grua1;
-    
-    Rectangle base_grua2;
-    Rectangle iman_grua2;
-    Line cuerda_grua2;
-    double Xbase_grua2;
-    double Yiman_grua2;
-    double vertical;
-    double horizontal;
+    Grua grua1; 
+    Grua grua2;
     
     
     boolean temp = false;
     boolean lista_ordenada = false;
-    boolean en_reversa = false;/**/
-    //boolean temp2 = false;
+    boolean en_reversa = false;
+    boolean cantidadGruas2 = false;
     
     
     int posX = 50;
@@ -74,7 +65,7 @@ public class Controller implements Initializable{
     int ancho=0;
     int sangria=30;
     int entre_espacio=10;
-    int duracion_animacion=1;
+    int duracion_animacion=3;
             
     
     int espacio_reservado = 0;
@@ -95,6 +86,8 @@ public class Controller implements Initializable{
     private Slider barra_duracion;
     @FXML
     private Button cocktailsort;
+    @FXML
+    private Label seudocodigo;
     
     
 
@@ -106,16 +99,17 @@ public class Controller implements Initializable{
             if((cantidad>=16) && (cantidad<=64) && ((cantidad%1)==0)){
                 if(this.temp == false){
                       crearRect((int) (cantidad-1));
-                      this.temp=true;                                            
-                      //this.temp2=false;                      
+                      this.temp=true;                          
                   }else{
-                      this.anchorPane.getChildren().removeAll(this.contenido);
-                        this.anchorPane.getChildren().removeAll(this.base_grua1);
-                        this.anchorPane.getChildren().removeAll(this.cuerda_grua1);
-                        this.anchorPane.getChildren().removeAll(this.iman_grua1);
-                        this.anchorPane.getChildren().removeAll(this.base_grua2);
-                        this.anchorPane.getChildren().removeAll(this.cuerda_grua2);
-                        this.anchorPane.getChildren().removeAll(this.iman_grua2);
+                    if(this.cantidadGruas2){
+                        borrarGrua(grua1);
+                        borrarGrua(grua2);
+                    }else{
+                        borrarGrua(grua1);
+                    }
+                      this.cantidadGruas2=false;
+                      this.seudocodigo.setText("");
+                      this.anchorPane.getChildren().removeAll(this.contenido);                      
                       this.contenido.clear();    
                       this.contenidoC.clear();
                       this.indices.clear();
@@ -148,8 +142,8 @@ public class Controller implements Initializable{
     @FXML
     public void lOGICA_Boton_Atras(){
         
-        ANIMACIONES.pause();
-        ANIMACIONES.setRate(-1);
+        ANIMACIONES.pause();        
+        ANIMACIONES.setRate(ANIMACIONES.getRate()*-1);
         ANIMACIONES.play();
     }
     
@@ -187,294 +181,222 @@ public class Controller implements Initializable{
         this.lista_ordenada=false;
     }
     
-
+    Grua crearGrua(int i){
+        Rectangle base_grua = new Rectangle((espacio_reservadoI+((entre_espacio+ancho)*i)), (166), ancho, (20));
+        Rectangle iman_grua = new Rectangle((espacio_reservadoI+((entre_espacio+ancho)*i)), (200), ancho, (20));
+        Line cuerda_grua = new Line(((espacio_reservadoI+((entre_espacio+ancho)*i))+(ancho/2)),175,(espacio_reservadoI+(ancho/2)+((entre_espacio+ancho)*i)),200);
+        double Xbase_grua = base_grua.getX();        
+        double Yiman_grua = 200 + 20;
+        
+        Grua grua = new Grua(base_grua, iman_grua, cuerda_grua, Xbase_grua, Yiman_grua);
+        return grua;
+    }
+    
+    void añadirGrua(Grua grua){
+        anchorPane.getChildren().addAll(grua.getBase_grua());
+        anchorPane.getChildren().addAll(grua.getIman_grua());
+        anchorPane.getChildren().addAll(grua.getCuerda_grua());
+    }
+    
+    void borrarGrua(Grua grua){
+        anchorPane.getChildren().removeAll(grua.getBase_grua());
+        anchorPane.getChildren().removeAll(grua.getIman_grua());
+        anchorPane.getChildren().removeAll(grua.getCuerda_grua());
+    }
+    
+    String insertion(){        
+        seudocodigo.setAlignment(Pos.TOP_LEFT);
+        String texto="insertion(ArrayList n){\n"
+                        +"for (int i = 1; i < n.size(); i++){\n"
+                            +"  int key = arr[i];\n"
+                            +"  int j = i - 1\n"
+                            +"  while (j >= 0 && arr[j] > key) {\n"
+                            +"    arr[j + 1] = arr[j]\n"
+                            +"    j = j - 1;\n"
+                            +"  }\n"
+                            +"arr[j + 1] = key;\n"
+                        +"}\n";
+           
+        return texto;
+    }
+    
+    String burbuja(){
+        seudocodigo.setAlignment(Pos.TOP_LEFT);
+        String texto = "burbuja(ArrayList n){\n"
+                            +"  for (int i = 0; i < n.size(); i++) {\n"
+                            +"    boolean intercambio = false;\n"
+                            +"    for (int j = 0; j < n.size()-i; j++) {\n"
+                            +"      if (n[j] > n[j+1]) {\n"
+                            +"        int temp = arr[j];\n"
+                            +"        n[j] = n[j+1];\n"
+                            +"        n[j+1] = temp;\n"
+                            +"        intercambio;\n"
+                            +"       }\n"
+                            +"     }\n"
+                            +"     if(!intercambio){\n"
+                            +"       break;\n"
+                            +"   }\n";
+                                
+        return texto;
+    }
+    
+    String cocktail(){
+        seudocodigo.setAlignment(Pos.TOP_LEFT);
+        String texto = "cocktail(ArrayList n){\n"
+                       +"   boolean intercambio = true;\n"
+                       +"   int star = 0;\n"
+                       +"   int end = n.size()-1;\n"
+                       +"   while(intercambio){\n"
+                       +"       intercambio = false;\n"
+                       +"       for(int j = start; j<end; j++){"
+                       +"           if(n[j]>n[j+1]){\n"
+                       +"               int temp = n[j];\n"
+                       +"               n[j]=n[j+1];\n"
+                       +"               n[j+1]=temp;\n"
+                       +"               intercambio=true;\n"
+                       +"           }\n"
+                       +"       }\n"
+                       +"       if(!intercambio){\n"
+                       +"           break;\n"
+                       +"       }\n"
+                       +"       intercambio=false;\n"
+                       +"       end--;\n"
+                       +"       \n"
+                       +"       for(int j = end; j>=start; j--){"
+                       +"           if(n[j]>n[j+1]){\n"
+                       +"               int temp = n[j];\n"
+                       +"               n[j]=n[j+1];\n"
+                       +"               n[j+1]=temp;\n"
+                       +"               intercambio=true;\n"
+                       +"           }\n"
+                       +"       }\n"
+                       +"       start++\n"
+                       +"   }\n"
+                       +" }\n";
+        return texto;
+    }
     
     
     @FXML
     void insertionSort3() {
         if(!lista_ordenada){
-            base_grua1 = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*0)), (166), ancho, (20));
-            Xbase_grua1 = base_grua1.getX();
-            anchorPane.getChildren().add(base_grua1);
-            iman_grua1 = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*0)), (200), ancho, (20));
-            Yiman_grua1 = 200 + 20;
-            anchorPane.getChildren().add(iman_grua1);
-            cuerda_grua1 = new Line((espacio_reservadoI+(ancho/2)),175,(espacio_reservadoI+(ancho/2)),200);
-            anchorPane.getChildren().add(cuerda_grua1);
-            
-            base_grua2 = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1)), (166), ancho, (20));
-            Xbase_grua2 = base_grua2.getX();
-            anchorPane.getChildren().add(base_grua2);
-            iman_grua2 = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1)), (200), ancho, (20));
-            Yiman_grua2 = 200 + 20;
-            anchorPane.getChildren().add(iman_grua2);
-            cuerda_grua2 = new Line(((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1))+(ancho/2)),175,((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1))+(ancho/2)),200);
-            anchorPane.getChildren().add(cuerda_grua2);
-            
+            seudocodigo.setText(insertion());
+            this.cantidadGruas2=true;
+            Grua grua1 = crearGrua(0);
+            añadirGrua(grua1);
+            Grua grua2 = crearGrua(1);
+            añadirGrua(grua2);
             for (int i = 1; i < contenidoC.size(); i++) {
                 Rectangle cajaActual = contenidoC.get(i);
                 int valorActual=(int) contenidoC.get(i).getHeight();
                 int j = i - 1;
-                animacionV1(i);
+                animacionV1(i, grua2);
                 while(j >= 0 && contenidoC.get(j).getHeight()> valorActual){
-                    animacionH1(j);
+                    animacionH1(j, grua1);
                     contenidoC.set((j+1), contenidoC.get(j));
                     j--;
                 }
             contenidoC.set((j+1), cajaActual);
-            animacionV2(i,(j+1));
+            animacionV2(i,(j+1), grua2);
             }
             ANIMACIONES.play();
             lista_ordenada=true;
+            this.grua1=grua1;
+            this.grua2=grua2;
         }else{
             ventanaORDEN();
         }   
     }
     
-    void animacionV1(int i){
-        TranslateTransition V1 = new TranslateTransition();
+    void animacionV1(int i, Grua grua){
         int indice = (int) indices.get(i);
-        V1.setNode(contenido.get(indice));
-        V1.setDuration(Duration.millis(duracion_animacion*100));
+        double rastreo = (espacio_reservadoI+((entre_espacio+ancho)*i)-grua.getXbase_grua());
+        double desplazamientoV = (contenido.get(indice).getY())- (grua.getYiman_grua());
+        double punto_cajaY = posY-contenido.get(indice).getHeight();
+        double iman_sujeto = contenido.get(indice).getY()-200;
+        TranslateTransition V1 = new TranslateTransition();
         
-        vertical = contenido.get(indice).getY()-100;
-        V1.setByY(-100);
+            V1.setNode(contenido.get(indice));
+            V1.setDuration(Duration.millis(duracion_animacion*100));
+
+            V1.setByY(-200);
         
+        grua.setXbase_grua(grua.getXbase_grua()+rastreo);
         
-        TranslateTransition RASTREObase_grua2H = new TranslateTransition(); 
-            RASTREObase_grua2H.setNode(base_grua2);
-            RASTREObase_grua2H.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoH2 = (espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*i)-Xbase_grua2);
-            RASTREObase_grua2H.setByX(desplazamientoH2);
-            horizontal= desplazamientoH2;
-            
-        TranslateTransition RASTREOiman_grua2H = new TranslateTransition(); 
-            RASTREOiman_grua2H.setNode(iman_grua2);
-            RASTREOiman_grua2H.setDuration(Duration.millis(duracion_animacion*100));
-            
-            RASTREOiman_grua2H.setByX(desplazamientoH2);
-        
-        TranslateTransition RASTREOcuerda_grua2H = new TranslateTransition(); 
-            RASTREOcuerda_grua2H.setNode(cuerda_grua2);
-            RASTREOcuerda_grua2H.setDuration(Duration.millis(duracion_animacion*100));
-            
-            RASTREOcuerda_grua2H.setByX(desplazamientoH2);
-        
-        TranslateTransition DESPLAZAMIENTOV_iman_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOV_iman_grua2.setNode(iman_grua2);
-            DESPLAZAMIENTOV_iman_grua2.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoV = (contenido.get(indice).getY())- (Yiman_grua2);            
-            DESPLAZAMIENTOV_iman_grua2.setByY(desplazamientoV);
-                Timeline DESPLAZAMIENTOV_cuerda_grua2 = stretchLine(cuerda_grua2, ((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1))+(ancho/2)), posY-contenido.get(indice).getHeight());
-                //---------------------------------
-            
-        TranslateTransition DESPLAZAMIENTOV2_iman_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOV2_iman_grua2.setNode(iman_grua2);
-            DESPLAZAMIENTOV2_iman_grua2.setDuration(Duration.millis(duracion_animacion*100));
-            DESPLAZAMIENTOV2_iman_grua2.setByY(-100);
-            //DESPLAZAMIENTOV2_iman_grua2.setByY(-desplazamientoV);
-            
-            Timeline DESPLAZAMIENTOV2_cuerda_grua2 = stretchLine(cuerda_grua2, (espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1)+(ancho/2)), vertical);
-        
-        ParallelTransition  RASTREO = new ParallelTransition ();
-            RASTREO.getChildren().addAll(RASTREObase_grua2H, RASTREOiman_grua2H, RASTREOcuerda_grua2H);
-        
-        ParallelTransition  ANIMACIONV1 = new ParallelTransition ();
-            ANIMACIONV1.getChildren().addAll(DESPLAZAMIENTOV_iman_grua2, DESPLAZAMIENTOV_cuerda_grua2);
-        
-        ParallelTransition  ANIMACIONV2 = new ParallelTransition ();
-            ANIMACIONV2.getChildren().addAll(V1 ,DESPLAZAMIENTOV2_iman_grua2, DESPLAZAMIENTOV2_cuerda_grua2);
+        ParallelTransition  ANIMACIONV = new ParallelTransition ();
+            ANIMACIONV.getChildren().addAll(V1 ,grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), -200, iman_sujeto));
                 
-        ANIMACIONES.getChildren().add(RASTREO);
-        ANIMACIONES.getChildren().add(ANIMACIONV1);
-        ANIMACIONES.getChildren().add(ANIMACIONV2);
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), rastreo));
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), desplazamientoV, punto_cajaY));
+        ANIMACIONES.getChildren().add(ANIMACIONV);
+        
+        
     }
     
-    void animacionV2(int i, int j){
+    void animacionV2(int i, int j, Grua grua){
+        int indiceI = (int) indices.get(i);
+        int indiceJ = (int) indicesSub.get(j);
+        double desplazamientoX = (contenido.get(i).getX()-contenido.get(j).getX());
+        double punto_cajaY = posY-contenido.get(indiceJ).getHeight();
+        double desplazaminetoV = -((contenido.get(indiceI).getY())- (grua.getYiman_grua()));
+        
         TranslateTransition transicion = new TranslateTransition();
-            transicion.setDuration(Duration.millis(duracion_animacion*100)); 
-
-            int indiceI = (int) indices.get(i);
-            int indiceJ = (int) indicesSub.get(j);
-
-            transicion.setNode(contenido.get(indiceI)); 
-            double desplazamientoV = (contenido.get(i).getX()-contenido.get(j).getX());
-
-            transicion.setByX(-desplazamientoV);
-            
-            
-        TranslateTransition DESPLAZAMIENTOH_base_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOH_base_grua2.setNode(base_grua2);
-            DESPLAZAMIENTOH_base_grua2.setDuration(Duration.millis(duracion_animacion*100));            
-            DESPLAZAMIENTOH_base_grua2.setByX(-desplazamientoV);
-            
-        TranslateTransition DESPLAZAMIENTOH_iman_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOH_iman_grua2.setNode(iman_grua2);
-            DESPLAZAMIENTOH_iman_grua2.setDuration(Duration.millis(duracion_animacion*100));            
-            DESPLAZAMIENTOH_iman_grua2.setByX(-desplazamientoV);
-            
-        TranslateTransition DESPLAZAMIENTOH_cuerda_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOH_cuerda_grua2.setNode(cuerda_grua2);
-            DESPLAZAMIENTOH_cuerda_grua2.setDuration(Duration.millis(duracion_animacion*100));            
-            DESPLAZAMIENTOH_cuerda_grua2.setByX(-desplazamientoV);
-        
-        
+            transicion.setDuration(Duration.millis(duracion_animacion*100));
+            transicion.setNode(contenido.get(indiceI));            
+            transicion.setByX(-desplazamientoX); 
+       
         TranslateTransition transicion2 = new TranslateTransition();
             transicion2.setNode(contenido.get(indiceI));
             transicion2.setDuration(Duration.millis(duracion_animacion*100));
-
-            transicion2.setByY(100);
-            indicesSub.set(j, indiceI);
-        
-        TranslateTransition DESPLAZAMIENTOV_iman_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOV_iman_grua2.setNode(iman_grua2);
-            DESPLAZAMIENTOV_iman_grua2.setDuration(Duration.millis(duracion_animacion*100));
-            //double DESPLAZAMIENTOV_iman_grua2 = (contenido.get(indiceJ).getY())- (Yiman_grua1);
-            DESPLAZAMIENTOV_iman_grua2.setByY(100);
-                Timeline DESPLAZAMIENTOV_cuerda_grua2 = stretchLine(cuerda_grua2, ((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1))+(ancho/2)), vertical+100);
-      
+            transicion2.setByY(200);
             
-        TranslateTransition DESPLAZAMIENTOV2_iman_grua2 = new TranslateTransition();
-            DESPLAZAMIENTOV2_iman_grua2.setNode(iman_grua2);
-            DESPLAZAMIENTOV2_iman_grua2.setDuration(Duration.millis(duracion_animacion*100));
-            double a = -((contenido.get(indiceI).getY())- (Yiman_grua2));
-            DESPLAZAMIENTOV2_iman_grua2.setByY(a);            
-            Timeline DESPLAZAMIENTOV2_cuerda_grua2= stretchLine(cuerda_grua2, ((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*1))+(ancho/2)), 200);
-        
-        
-        
-        //Xbase_grua2 = Xbase_grua2 + desplazamientoV + horizontal;
-        
-        
-        
+        indicesSub.set(j, indiceI);
         reordenar();
         
-        ParallelTransition  DESPLAZAMIENTOH = new ParallelTransition ();
-            DESPLAZAMIENTOH.getChildren().addAll(transicion, DESPLAZAMIENTOH_base_grua2, DESPLAZAMIENTOH_iman_grua2, DESPLAZAMIENTOH_cuerda_grua2);
+        
+        grua.setXbase_grua(grua.getXbase_grua()-desplazamientoX);
+        
+        ParallelTransition  ANIMACIONH = new ParallelTransition ();
+            ANIMACIONH.getChildren().addAll(transicion, grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), (-desplazamientoX)));
         
         ParallelTransition  DESPLAZAMIENTOV = new ParallelTransition ();
-            DESPLAZAMIENTOV.getChildren().addAll(transicion2 ,DESPLAZAMIENTOV_iman_grua2, DESPLAZAMIENTOV_cuerda_grua2);
-                    
-        ParallelTransition  DESPLAZAMIENTOV2 = new ParallelTransition ();
-        DESPLAZAMIENTOV2.getChildren().addAll(DESPLAZAMIENTOV2_iman_grua2, DESPLAZAMIENTOV2_cuerda_grua2);
-        
-        
-        Xbase_grua2 = Xbase_grua2 - desplazamientoV + horizontal;
-        
-        ANIMACIONES.getChildren().add(DESPLAZAMIENTOH);
+            DESPLAZAMIENTOV.getChildren().addAll(transicion2, grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), 200, punto_cajaY));
+               
+        ANIMACIONES.getChildren().add(ANIMACIONH);
         ANIMACIONES.getChildren().add(DESPLAZAMIENTOV);
-        ANIMACIONES.getChildren().add(DESPLAZAMIENTOV2);
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), desplazaminetoV, 200));
+        
         
         
     }
     
-    void animacionH1(int j){
-        TranslateTransition H1 = new TranslateTransition();
-            int indiceJ = (int) indicesSub.get(j);
+    void animacionH1(int j, Grua grua){
+        int indiceJ = (int) indicesSub.get(j);
+        double desplazamientoH = (ancho+10);
+        double rastreo = (espacio_reservadoI+((entre_espacio+ancho)*j)-grua.getXbase_grua());
+        double desplazamientoV = (contenido.get(indiceJ).getY())- (grua.getYiman_grua());
+        double punto_cajaY = posY-contenido.get(indiceJ).getHeight();
+        double iman_originalY = 200;
+        
+        
+        TranslateTransition H1 = new TranslateTransition();       
             H1.setNode(contenido.get(indiceJ));
-            H1.setDuration(Duration.millis(duracion_animacion*100));
-
-            contenido.get(j).setFill(Color.web("#E6FA07"));
-            double desplazamientoH = (ancho+10);
-            H1.setByX(desplazamientoH);
-            contenido.get(j).setFill(Color.web("#2191FB"));
+            H1.setDuration(Duration.millis(duracion_animacion*100));           
+            H1.setByX(desplazamientoH);            
 
             indicesSub.set((j+1),indiceJ);
+            grua.setXbase_grua(grua.getXbase_grua()+ rastreo + desplazamientoH);
             
+        ParallelTransition  ANIMACIONH = new ParallelTransition ();
+            ANIMACIONH.getChildren().addAll(H1 ,grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), desplazamientoH));    
             
-        TranslateTransition RASTREObase_grua1H = new TranslateTransition(); 
-            RASTREObase_grua1H.setNode(base_grua1);
-            RASTREObase_grua1H.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoH2 = (espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*j)-Xbase_grua1);
-            RASTREObase_grua1H.setByX(desplazamientoH2);
-            
-        TranslateTransition RASTREOiman_grua1H = new TranslateTransition(); 
-            RASTREOiman_grua1H.setNode(iman_grua1);
-            RASTREOiman_grua1H.setDuration(Duration.millis(duracion_animacion*100));
-            
-            RASTREOiman_grua1H.setByX(desplazamientoH2);
-        
-        TranslateTransition RASTREOcuerda_grua1H = new TranslateTransition(); 
-            RASTREOcuerda_grua1H.setNode(cuerda_grua1);
-            RASTREOcuerda_grua1H.setDuration(Duration.millis(duracion_animacion*100));
-            
-            RASTREOcuerda_grua1H.setByX(desplazamientoH2);
-            
-        TranslateTransition DESPLAZAMIENTOH_base_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOH_base_grua1.setNode(base_grua1);
-            DESPLAZAMIENTOH_base_grua1.setDuration(Duration.millis(duracion_animacion*100));            
-            DESPLAZAMIENTOH_base_grua1.setByX(desplazamientoH);
-            
-        TranslateTransition DESPLAZAMIENTOH_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOH_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOH_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));            
-            DESPLAZAMIENTOH_iman_grua1.setByX(desplazamientoH);
-            
-        TranslateTransition DESPLAZAMIENTOH_cuerda_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOH_cuerda_grua1.setNode(cuerda_grua1);
-            DESPLAZAMIENTOH_cuerda_grua1.setDuration(Duration.millis(duracion_animacion*100));            
-            DESPLAZAMIENTOH_cuerda_grua1.setByX(desplazamientoH);
-        
-        TranslateTransition DESPLAZAMIENTOV_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOV_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOV_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoV = (contenido.get(indiceJ).getY())- (Yiman_grua1);
-            DESPLAZAMIENTOV_iman_grua1.setByY(desplazamientoV);
-                Timeline DESPLAZAMIENTOV_cuerda_grua1 = stretchLine(cuerda_grua1, (espacio_reservadoI+(ancho/2)), posY-contenido.get(indiceJ).getHeight());
-      
-            
-        TranslateTransition DESPLAZAMIENTOV2_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOV2_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOV2_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));
-            DESPLAZAMIENTOV2_iman_grua1.setByY(-desplazamientoV);            
-            Timeline DESPLAZAMIENTOV2_cuerda_grua1 = stretchLine(cuerda_grua1, (espacio_reservadoI+(ancho/2)), 200);
-            
-            
-        ParallelTransition  paralelo = new ParallelTransition ();
-        paralelo.getChildren().addAll(H1, DESPLAZAMIENTOH_base_grua1, DESPLAZAMIENTOH_iman_grua1, DESPLAZAMIENTOH_cuerda_grua1);
-        
-        ParallelTransition  paralelo2 = new ParallelTransition ();
-        paralelo2.getChildren().addAll(RASTREObase_grua1H, RASTREOiman_grua1H, RASTREOcuerda_grua1H);
-        
-        ParallelTransition  paralelo3 = new ParallelTransition ();
-        paralelo3.getChildren().addAll(DESPLAZAMIENTOV_iman_grua1, DESPLAZAMIENTOV_cuerda_grua1);
-        
-        ParallelTransition  paralelo4 = new ParallelTransition ();
-        
-        paralelo4.getChildren().addAll(DESPLAZAMIENTOV2_iman_grua1, DESPLAZAMIENTOV2_cuerda_grua1 );
-        
-        Xbase_grua1 = Xbase_grua1 + desplazamientoH2 + desplazamientoH;
-        
-        ANIMACIONES.getChildren().add(paralelo2);
-        ANIMACIONES.getChildren().add(paralelo3);
-        ANIMACIONES.getChildren().add(paralelo);
-        ANIMACIONES.getChildren().add(paralelo4);
-        
-        
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), rastreo));
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), desplazamientoV, punto_cajaY));
+        ANIMACIONES.getChildren().add(ANIMACIONH);
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), -desplazamientoV, iman_originalY));
     }
     
-    private Timeline stretchLine(Line line, double targetX, double targetY) {
-        double startX = line.getStartX();
-        double startY = line.getStartY();
-
-        // Crear animaciones para estirar la línea en las coordenadas x e y
-        KeyValue keyValueX = new KeyValue(line.endXProperty(), targetX);
-        KeyValue keyValueY = new KeyValue(line.endYProperty(), targetY);
-
-        // Crear keyframes para las animaciones
-        KeyFrame keyFrameX = new KeyFrame(Duration.millis(duracion_animacion*100), keyValueX);
-        KeyFrame keyFrameY = new KeyFrame(Duration.millis(duracion_animacion*100), keyValueY);
-        //Duration.seconds(0.1)
-        // Crear una timeline con los keyframes
-        Timeline timeline = new Timeline(keyFrameX, keyFrameY);
-
-        // Establecer el punto de partida de la línea
-        line.setEndX(startX);
-        line.setEndY(startY);
-
-        // Iniciar la animación
-        return timeline;
-    }
+    
     
     void reordenar(){
         for (int i = 0; i < indicesSub.size(); i++) {
@@ -486,27 +408,21 @@ public class Controller implements Initializable{
     @FXML
     public void burbujaOP(){
         if(!lista_ordenada){
-            base_grua1 = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*0)), (166), ancho, (20));
-            Xbase_grua1 = base_grua1.getX();
-            anchorPane.getChildren().add(base_grua1);
-            iman_grua1 = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*0)), (200), ancho, (20));
-            Yiman_grua1 = 200 + 20;
-            anchorPane.getChildren().add(iman_grua1);
-            cuerda_grua1 = new Line((espacio_reservadoI+(ancho/2)),175,(espacio_reservadoI+(ancho/2)),200);
-            anchorPane.getChildren().add(cuerda_grua1);
-            
+            seudocodigo.setText(burbuja());
+            Grua grua1 = crearGrua(0);
+            añadirGrua(grua1);
             for (int i = 1; i < contenidoC.size(); i++) {
                 boolean intercambio = false;
                 for (int j = 0; (j < ((contenidoC.size()-i))); j++) {
                     if((contenidoC.get(j).getHeight())>(contenidoC.get(j+1).getHeight())){
                         
-                        BURBUJA_animacionVH((j+1), false);
+                        BURBUJA_animacionVH((j+1), grua1, false);
                         Rectangle actual = contenidoC.get(j);
                         
-                        animacionH1(j);
+                        animacionH1(j, grua1);
                         contenidoC.set((j), contenidoC.get(j+1));
                         
-                        BURBUJA_animacionVH2(j+1,(j), false);
+                        BURBUJA_animacionVH2(j+1,(j), grua1,false);
                         contenidoC.set((j+1), actual);
                         intercambio = true;
                         
@@ -518,147 +434,89 @@ public class Controller implements Initializable{
             }
             ANIMACIONES.play();
             lista_ordenada=true;
+            this.grua1=grua1;
         }else{
             ventanaORDEN();
         }
             
     }
     
-    public void BURBUJA_animacionVH(int i, boolean cocktail){
-        TranslateTransition V1 = new TranslateTransition();
-            int indice = (int) indices.get(i);
+    public void BURBUJA_animacionVH(int i, Grua grua,boolean cocktail){
+        int indice = (int) indices.get(i);
+        double rastreoGrua = (espacio_reservadoI+((entre_espacio+ancho)*i)-grua.getXbase_grua());
+        double desplazamientoV = ((contenido.get(indice).getY())-(grua.getYiman_grua()));
+        double punto_cajaY = posY - contenido.get(indice).getHeight();
+        double iman_sujeto = contenido.get(indice).getY()-200;
+       
+        
+        TranslateTransition V1 = new TranslateTransition();            
             V1.setNode(contenido.get(indice));
             V1.setDuration(Duration.millis(duracion_animacion*100));
-            vertical = contenido.get(indice).getY()-100;
-            V1.setByY(-100);
-            //ANIMACIONES.getChildren().add(V1);
-            
-        TranslateTransition RASTREObase_grua1H = new TranslateTransition(); 
-            RASTREObase_grua1H.setNode(base_grua1);
-            RASTREObase_grua1H.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoH2 = (espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*i)-Xbase_grua1);
-            RASTREObase_grua1H.setByX(desplazamientoH2);
-            
-        TranslateTransition RASTREOiman_grua1H = new TranslateTransition(); 
-            RASTREOiman_grua1H.setNode(iman_grua1);
-            RASTREOiman_grua1H.setDuration(Duration.millis(duracion_animacion*100));
-            
-            RASTREOiman_grua1H.setByX(desplazamientoH2);
-        
-        TranslateTransition RASTREOcuerda_grua1H = new TranslateTransition(); 
-            RASTREOcuerda_grua1H.setNode(cuerda_grua1);
-            RASTREOcuerda_grua1H.setDuration(Duration.millis(duracion_animacion*100));
-            
-            RASTREOcuerda_grua1H.setByX(desplazamientoH2);
-        
-        TranslateTransition DESPLAZAMIENTOV_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOV_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOV_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoV = (contenido.get(indice).getY())- (Yiman_grua1);
-            DESPLAZAMIENTOV_iman_grua1.setByY(desplazamientoV);
-                Timeline DESPLAZAMIENTOV_cuerda_grua1 = stretchLine(cuerda_grua1, (espacio_reservadoI+(ancho/2)), posY-contenido.get(indice).getHeight());
-      
-            
-        TranslateTransition DESPLAZAMIENTOV2_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOV2_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOV2_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));
-            DESPLAZAMIENTOV2_iman_grua1.setByY(-100);            
-            Timeline DESPLAZAMIENTOV2_cuerda_grua1 = stretchLine(cuerda_grua1, (espacio_reservadoI+(ancho/2)), vertical+100);
-            
-        TranslateTransition DESPLAZAMIENTOH_base_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOH_base_grua1.setNode(base_grua1);
-            DESPLAZAMIENTOH_base_grua1.setDuration(Duration.millis(duracion_animacion*100));            
-            //DESPLAZAMIENTOH_base_grua1.setByX(desplazamientoH);
-            
-        TranslateTransition DESPLAZAMIENTOH_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOH_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOH_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));            
-            //DESPLAZAMIENTOH_iman_grua1.setByX(desplazamientoH);
-            
-        TranslateTransition DESPLAZAMIENTOH_cuerda_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOH_cuerda_grua1.setNode(cuerda_grua1);
-            DESPLAZAMIENTOH_cuerda_grua1.setDuration(Duration.millis(duracion_animacion*100));            
-            //DESPLAZAMIENTOH_cuerda_grua1.setByX(desplazamientoH); 
-        
+            V1.setByY(-200);
+          
             
         TranslateTransition H1 = new TranslateTransition();
             H1.setNode(contenido.get(indice));
             H1.setDuration(Duration.millis(duracion_animacion*100));
 
-            int posicion_actual = (espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*i));
+            int posicion_actual = (espacio_reservadoI+((entre_espacio+ancho)*i));
+            double desplazamientoH;
             if(!cocktail){
-                H1.setByX(espacio_reservado-posicion_actual);
-                DESPLAZAMIENTOH_base_grua1.setByX(espacio_reservado-posicion_actual);
-                DESPLAZAMIENTOH_iman_grua1.setByX(espacio_reservado-posicion_actual);
-                DESPLAZAMIENTOH_cuerda_grua1.setByX(espacio_reservado-posicion_actual); 
+                desplazamientoH = espacio_reservado-posicion_actual;
                 
             }else{
-                H1.setByX(sangria-posicion_actual);
+                desplazamientoH = sangria-posicion_actual;
             }
-            
-            //ANIMACIONES.getChildren().add(H1);
+            H1.setByX(desplazamientoH);
         
         
         TranslateTransition V2 = new TranslateTransition();
             V2.setNode(contenido.get(indice));
             V2.setDuration(Duration.millis(duracion_animacion*100));
 
-            V2.setByY(100);
-            
-        TranslateTransition DESPLAZAMIENTOV3_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOV3_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOV3_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));
-            double desplazamientoV3 = (contenido.get(indice).getY())- (Yiman_grua1);
-            DESPLAZAMIENTOV_iman_grua1.setByY(100);
-                Timeline DESPLAZAMIENTOV3_cuerda_grua1 = stretchLine(cuerda_grua1, (espacio_reservadoI+(ancho/2)), vertical+100);
-      
-            
-        TranslateTransition DESPLAZAMIENTOV4_iman_grua1 = new TranslateTransition();
-            DESPLAZAMIENTOV4_iman_grua1.setNode(iman_grua1);
-            DESPLAZAMIENTOV4_iman_grua1.setDuration(Duration.millis(duracion_animacion*100));
-            DESPLAZAMIENTOV4_iman_grua1.setByY(-desplazamientoV);            
-            Timeline DESPLAZAMIENTOV4_cuerda_grua1 = stretchLine(cuerda_grua1, (espacio_reservadoI+(ancho/2)), 200);
+            V2.setByY(200);
         
-        ParallelTransition  RASTREO = new ParallelTransition ();
-            RASTREO.getChildren().addAll(RASTREObase_grua1H, RASTREOiman_grua1H, RASTREOcuerda_grua1H);
-            
-        ParallelTransition  VERTICAL1 = new ParallelTransition ();
-            VERTICAL1.getChildren().addAll(DESPLAZAMIENTOV_iman_grua1, DESPLAZAMIENTOV_cuerda_grua1);
-            
-            ParallelTransition  VERTICAL2 = new ParallelTransition ();
-                VERTICAL2.getChildren().addAll(V1, DESPLAZAMIENTOV2_iman_grua1, DESPLAZAMIENTOV2_cuerda_grua1 );
+       
         
+        ParallelTransition  VERTICAL2 = new ParallelTransition ();
+            VERTICAL2.getChildren().addAll(V1, grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), -200, iman_sujeto));                
                         
         ParallelTransition  DESPLAZAMIENTO = new ParallelTransition ();
-            DESPLAZAMIENTO.getChildren().addAll(H1, DESPLAZAMIENTOH_base_grua1, DESPLAZAMIENTOH_iman_grua1, DESPLAZAMIENTOH_cuerda_grua1);            
-        
-            ParallelTransition  VERTICAL3 = new ParallelTransition ();
-            VERTICAL3.getChildren().addAll(V2, DESPLAZAMIENTOV3_iman_grua1, DESPLAZAMIENTOV3_cuerda_grua1);
-        
-            ParallelTransition  VERTICAL4 = new ParallelTransition ();
-                VERTICAL4.getChildren().addAll(DESPLAZAMIENTOV4_iman_grua1, DESPLAZAMIENTOV4_cuerda_grua1);
+            DESPLAZAMIENTO.getChildren().addAll(H1, grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), desplazamientoH));                   
+
+        ParallelTransition  VERTICAL3 = new ParallelTransition ();
+            VERTICAL3.getChildren().addAll(V2, grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), 200, punto_cajaY));
             
-            ANIMACIONES.getChildren().add(RASTREO);
-            ANIMACIONES.getChildren().add(VERTICAL1);
+           
+                
+            ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), rastreoGrua));
+            grua.setXbase_grua(grua.getXbase_grua()+rastreoGrua);
+            ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), desplazamientoV, punto_cajaY));
             ANIMACIONES.getChildren().add(VERTICAL2);            
-            ANIMACIONES.getChildren().add(DESPLAZAMIENTO);            
+            ANIMACIONES.getChildren().add(DESPLAZAMIENTO); 
+            grua.setXbase_grua(grua.getXbase_grua()+desplazamientoH);
             ANIMACIONES.getChildren().add(VERTICAL3);
-            //ANIMACIONES.getChildren().add(VERTICAL4);
+           ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), -desplazamientoV, 200));
             
             
     }
     
-    public void BURBUJA_animacionVH2(int i, int j, boolean cocktail){
+    public void BURBUJA_animacionVH2(int i, int j, Grua grua,boolean cocktail){
         int indiceI = (int) indices.get(i);
         int indiceJ = (int) indicesSub.get(j);
+        double rastreoGrua = 0;        
+        double desplazamientoV = ((contenido.get(indiceI).getY())-(grua.getYiman_grua()));
+        double punto_cajaY = posY - contenido.get(indiceI).getHeight();
+        double iman_sujeto = contenido.get(indiceI).getY()-200;
         
         
         TranslateTransition V1 = new TranslateTransition();
             V1.setDuration(Duration.millis(duracion_animacion*100)); 
             V1.setNode(contenido.get(indiceI)); 
 
-            V1.setByY(-100);
-            ANIMACIONES.getChildren().add(V1);
+            V1.setByY(-200);
+            ParallelTransition  VERTICALV2 = new ParallelTransition ();
+                VERTICALV2.getChildren().addAll(V1, grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), -200, iman_sujeto));
         
         
         TranslateTransition H1 = new TranslateTransition();
@@ -667,30 +525,54 @@ public class Controller implements Initializable{
             
             double desplazamientoH=0;
             if(!cocktail){
+                rastreoGrua = espacio_reservado-grua.getXbase_grua(); 
                 desplazamientoH = (contenido.get(j).getX()-espacio_reservado);
             }else{
                 desplazamientoH =(contenido.get(j).getX()-sangria);
+                rastreoGrua = sangria-grua.getXbase_grua(); 
+                
             }
             H1.setByX(desplazamientoH);
-            ANIMACIONES.getChildren().add(H1);    
+            
+             ParallelTransition  DESPLAZAMIENTOH = new ParallelTransition ();
+                DESPLAZAMIENTOH.getChildren().addAll(H1,grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), desplazamientoH));
+                
         
         
         TranslateTransition V2 = new TranslateTransition();
             V2.setDuration(Duration.millis(duracion_animacion*100)); 
             V2.setNode(contenido.get(indiceI)); 
 
-            V2.setByY(100);
-            ANIMACIONES.getChildren().add(V2);
+            V2.setByY(200);
+            
+            ParallelTransition  VERTICAL3 = new ParallelTransition ();
+                VERTICAL3.getChildren().addAll(V2,grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), 200, punto_cajaY));
+            
         
         
         indicesSub.set(j, indiceI);
         reordenar();
-    }
+        
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOH(Duration.millis(duracion_animacion*100), rastreoGrua));
+        grua.setXbase_grua(grua.getXbase_grua()+rastreoGrua);
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), desplazamientoV, punto_cajaY));
+        ANIMACIONES.getChildren().add(VERTICALV2);
+        ANIMACIONES.getChildren().add(DESPLAZAMIENTOH);
+        grua.setXbase_grua(grua.getXbase_grua()+desplazamientoH);
+        
+        ANIMACIONES.getChildren().add(VERTICAL3);
+        ANIMACIONES.getChildren().add(grua.DESPLAZAMIENTOV(Duration.millis(duracion_animacion*100), -desplazamientoV, 200));
+        
+        
+    }   
     
     
     @FXML
     public void cocktailSort(){
         if(!lista_ordenada){
+            seudocodigo.setText(cocktail());
+            Grua grua1 = crearGrua(0);
+            añadirGrua(grua1);
             boolean intercambio = true;
             int start = 0;
             int end = contenido.size() - 1;
@@ -699,12 +581,12 @@ public class Controller implements Initializable{
 
                 for (int j = start; j < end; j++) {
                     if((contenidoC.get(j).getHeight())>(contenidoC.get(j+1).getHeight())){
-                        BURBUJA_animacionVH((j+1), false);
+                        BURBUJA_animacionVH((j+1), grua1, false);
                         Rectangle actual = contenidoC.get(j);
                         
-                        animacionH1(j);
+                        animacionH1(j, grua1);
                         contenidoC.set((j), contenidoC.get(j+1));
-                        BURBUJA_animacionVH2(j+1,(j), false);
+                        BURBUJA_animacionVH2(j+1,(j), grua1, false);
                         contenidoC.set((j+1), actual);
                         intercambio = true;
                         
@@ -721,12 +603,12 @@ public class Controller implements Initializable{
                 
                 for (int j = end - 1; j >= start; j--) {
                     if((contenidoC.get(j).getHeight())>(contenidoC.get(j+1).getHeight())){
-                        BURBUJA_animacionVH((j+1), true);
+                        BURBUJA_animacionVH((j+1), grua1, true);
                         Rectangle actual = contenidoC.get(j);
                         
-                        animacionH1(j);
+                        animacionH1(j, grua1);
                         contenidoC.set((j), contenidoC.get(j+1));
-                        BURBUJA_animacionVH2(j+1,(j), true);
+                        BURBUJA_animacionVH2(j+1,(j), grua1, true);
                         contenidoC.set((j+1), actual);
                         intercambio = true;
                         
@@ -739,6 +621,7 @@ public class Controller implements Initializable{
             }
             ANIMACIONES.play();
             lista_ordenada=true;
+            this.grua1=grua1;
         }else{
           ventanaORDEN();  
         }
@@ -750,7 +633,8 @@ public class Controller implements Initializable{
         barra_duracion.valueProperty().addListener(new ChangeListener<Number>(){
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                duracion_animacion = (int) barra_duracion.getValue();
+                //duracion_animacion = (int) barra_duracion.getValue();
+                ANIMACIONES.setRate((int) barra_duracion.getValue());
             }
         });
     }
