@@ -58,6 +58,7 @@ public class Controller implements Initializable{
     boolean lista_ordenada = false;
     boolean en_reversa = false;
     boolean cantidadGruas2 = false;
+    boolean cantidadGruas1 = false;
     
     
     int posX = 50;
@@ -104,10 +105,11 @@ public class Controller implements Initializable{
                     if(this.cantidadGruas2){
                         borrarGrua(grua1);
                         borrarGrua(grua2);
-                    }else{
+                    }else if(this.cantidadGruas1){
                         borrarGrua(grua1);
                     }
                       this.cantidadGruas2=false;
+                      this.cantidadGruas1=false;
                       this.seudocodigo.setText("");
                       this.anchorPane.getChildren().removeAll(this.contenido);                      
                       this.contenido.clear();    
@@ -411,6 +413,7 @@ public class Controller implements Initializable{
             seudocodigo.setText(burbuja());
             Grua grua1 = crearGrua(0);
             añadirGrua(grua1);
+            this.cantidadGruas1 = true;
             for (int i = 1; i < contenidoC.size(); i++) {
                 boolean intercambio = false;
                 for (int j = 0; (j < ((contenidoC.size()-i))); j++) {
@@ -573,6 +576,7 @@ public class Controller implements Initializable{
             seudocodigo.setText(cocktail());
             Grua grua1 = crearGrua(0);
             añadirGrua(grua1);
+            this.cantidadGruas1 = true;
             boolean intercambio = true;
             int start = 0;
             int end = contenido.size() - 1;
