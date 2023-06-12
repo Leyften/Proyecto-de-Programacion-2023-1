@@ -1,39 +1,60 @@
 package javafxapplication2;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-    // cargar la vista FXML
-    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-    InputStream stream = new FileInputStream("C:\\Users\\nikol\\Desktop\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        // Crear el TabPane
+        TabPane tabPane = new TabPane();
 
-    // crear un objeto ImageView con la imagen deseada
-    Image image = new Image(stream);
-    ImageView imageView = new ImageView(image);
-    
-    // crear un contenedor para la imagen y la vista FXML
-    AnchorPane anchorPane = new AnchorPane();
-    anchorPane.getChildren().addAll(imageView, root); // agregar la imagen y la vista al contenedor
-    Scene scene = new Scene(anchorPane); // crear una escena con el contenedor como raíz
-    
-    primaryStage.setTitle("Imagen");
-    primaryStage.setScene(scene);
-    primaryStage.sizeToScene();
-    primaryStage.show();
-}
+        // Cargar la imagen en la pestaña "Sample"
+        Tab sampleTab = new Tab("Unidad 1 y 2");
+        Parent sampleRoot = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        sampleTab.setContent(sampleRoot);
+
+        InputStream stream = new FileInputStream("C:\\Users\\nikol\\Desktop\\trabajando\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView(image);
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(imageView);
+        anchorPane.getChildren().add(sampleRoot);
+        AnchorPane.setTopAnchor(sampleRoot, 0.0);
+        AnchorPane.setBottomAnchor(sampleRoot, 0.0);
+        AnchorPane.setLeftAnchor(sampleRoot, 0.0);
+        AnchorPane.setRightAnchor(sampleRoot, 0.0);
+
+        sampleTab.setContent(anchorPane);
+
+        tabPane.getTabs().add(sampleTab);
+
+        // Agregar la pestaña "Ferrocarriles" sin imagen
+        Tab ferrocarrilesTab = new Tab("Unidad 3");
+        Parent ferrocarrilesRoot = FXMLLoader.load(getClass().getResource("tren.fxml"));
+        ferrocarrilesTab.setContent(ferrocarrilesRoot);
+        tabPane.getTabs().add(ferrocarrilesTab);
+
+        // Crear la escena con el TabPane
+        Scene scene = new Scene(tabPane);
+
+        primaryStage.setTitle("Duramos+");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
     public static void main(String[] args) {
         launch(args);

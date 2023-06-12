@@ -6,7 +6,6 @@ package javafxapplication2;
 
 import java.util.ArrayList;
 import javafx.scene.shape.Line;
-
 public class NumBuilder {
     //ArrayList que continen el numero compuesto
     public ArrayList<ArrayList<Line>> digitos = new ArrayList<>();
@@ -16,11 +15,11 @@ public class NumBuilder {
     //variables globales para estandar de dimensiones
     
     //Altura de los numeros
-    float AltNum;
+    double AltNum;
     //Espacio entre numeros
-    float space;
+    double space;
     
-    public NumBuilder(int num, float x, float y, int ancho) {
+    public NumBuilder(int num, float x, float y, double ancho) {
         y -= 10;
         //Clean para ocupar el "molde"
         digitosLines.clear();
@@ -51,7 +50,7 @@ public class NumBuilder {
    
     }
 
-    private void Dibujar(int op, float posX, float posY, float AnchNum){
+    private void Dibujar(int op, double posX, double posY, double AnchNum){
         //posibles lineas a ocupar, se llaman aca, para no repetir las llamadas
         Line linea;
         Line linea2;

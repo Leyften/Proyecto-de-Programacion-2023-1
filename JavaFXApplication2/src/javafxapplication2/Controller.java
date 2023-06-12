@@ -170,7 +170,7 @@ public class Controller implements Initializable{
         espacio_reservado = 1025-(ancho);
         espacio_reservadoI = sangria+ancho+10;
         for (int i = 0; i <= cantidad; i++) {
-            int random = rand.nextInt(100);
+            int random = rand.nextInt(120+1)+10;
             Rectangle caja = new Rectangle((espacio_reservadoI/*sangria*/+((entre_espacio+ancho)*i)), (posY-random), ancho, random);
             caja.setFill(Color.web("#2191FB"));
             this.contenido.add(caja);

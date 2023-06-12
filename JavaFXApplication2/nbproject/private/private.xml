@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/nikol/Desktop/JavaFXApplication2/src/javafxapplication2/NumBuilder.java</file>
-            <file>file:/C:/Users/nikol/Desktop/JavaFXApplication2/src/javafxapplication2/Main.java</file>
-            <file>file:/C:/Users/nikol/Desktop/JavaFXApplication2/src/javafxapplication2/sample.fxml</file>
-            <file>file:/C:/Users/nikol/Desktop/JavaFXApplication2/src/javafxapplication2/Grua.java</file>
-            <file>file:/C:/Users/nikol/Desktop/JavaFXApplication2/src/javafxapplication2/Controller.java</file>
+            <file>file:/C:/Users/nikol/Desktop/trabajando/JavaFXApplication2/src/javafxapplication2/tren.fxml</file>
+            <file>file:/C:/Users/nikol/Desktop/trabajando/JavaFXApplication2/src/javafxapplication2/TrenController.java</file>
+            <file>file:/C:/Users/nikol/Desktop/trabajando/JavaFXApplication2/src/javafxapplication2/Controller.java</file>
+            <file>file:/C:/Users/nikol/Desktop/trabajando/JavaFXApplication2/src/javafxapplication2/Main.java</file>
+            <file>file:/C:/Users/nikol/Desktop/trabajando/JavaFXApplication2/src/javafxapplication2/Vagon.java</file>
         </group>
     </open-files>
 </project-private>
