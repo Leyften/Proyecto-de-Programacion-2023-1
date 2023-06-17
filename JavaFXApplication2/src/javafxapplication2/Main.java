@@ -26,7 +26,7 @@ public class Main extends Application {
         Parent sampleRoot = FXMLLoader.load(getClass().getResource("sample.fxml"));
         sampleTab.setContent(sampleRoot);
 
-        InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        InputStream stream = new FileInputStream("C:\\Users\\nikol\\Desktop\\trabajando\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
         Image image = new Image(stream);
         ImageView imageView = new ImageView(image);
 
