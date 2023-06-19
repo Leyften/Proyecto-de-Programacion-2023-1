@@ -6,11 +6,15 @@ package javafxapplication2;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -19,6 +23,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -27,20 +34,24 @@ import javafx.scene.layout.AnchorPane;
  */
 public class TrenController implements Initializable {
     
-    int sangria = 30;
-    int entre_espacio = 15;
+    int sangria = 2;
+    int entre_espacio = 2;
     int posX= 0;
     int posY = 360;
+    int duracion_animacion = 20;
+    int punto_interseccion = 800;
     
     Random rand = new Random();
     
     boolean lista_ordenada = false;
-    boolean existencia_Vagones = false;
+    boolean existencia_Vagones = false;  
     
-    Vagon carril1 = new Vagon(20, 20, 5);
     
     ArrayList<Vagon> contenido = new ArrayList();
     ArrayList<Vagon> contenidoC = new ArrayList();
+    ArrayList<Vagon> via_Principal = new ArrayList();
+    ArrayList<Vagon> via_Superior = new ArrayList();
+    ArrayList<Vagon> via_Inferior = new ArrayList();
     ArrayList               indices = new ArrayList();
     ArrayList               indicesSub = new ArrayList();
     
@@ -79,65 +90,98 @@ public class TrenController implements Initializable {
         alert.setContentText(textoError);
         alert.showAndWait();
     }   
-    
+   
     
     @FXML
     public void Logica_Boton_Crear(){
         String regex = "^(1[6-9]|[2-5][0-9]|6[0-4])$";
+        int cantidad = Integer.parseInt(Texto_Usuario.getText());
         if(Texto_Usuario.getText().matches(regex)){
-            int cantidad = Integer.parseInt(Texto_Usuario.getText());
+            //int cantidad = Integer.parseInt(Texto_Usuario.getText());
             if(existencia_Vagones==false){                
-                Crear_Vagones(cantidad);
+                //Crear_Vagones(cantidad);
+                pruebas();
                 existencia_Vagones = true;
             }else{
-                AnchorPane.getChildren().removeAll(contenido);                      
+                //AnchorPane.getChildren().removeAll(contenido); 
+                borrar();
                 contenido.clear();
                 contenidoC.clear();
                 indices.clear();
                 indicesSub.clear();
                 ANIMACIONES.stop();
                 ANIMACIONES.getChildren().remove(0, ANIMACIONES.getChildren().size());
-                Crear_Vagones(cantidad);
+                //Crear_Vagones(cantidad);
+                pruebas();
             }
             
         }else{
             ventanaERROR("cantidad");
         }
-    }   
+    }
     
+    public void borrar(){
+        for (int i = 0; i < contenido.size(); i++) {
+            AnchorPane.getChildren().removeAll(contenido.get(i).canvas);
+        }
+    }
     
-    
-    public void Crear_Vagones(int cantidad){
-        for (int i = 0; i < cantidad; i++) {
-            int random = rand.nextInt(100);
-            System.out.println(random);
-            Vagon vagon = new Vagon((sangria+(50+entre_espacio)*i), posY, random);
+    public void pruebas(){
+        ArrayList numeros = new ArrayList();
+        numeros.add(2);
+        numeros.add(5);
+        numeros.add(3);
+        numeros.add(1);
+        numeros.add(4);
+        
+        for (int i = 0; i < 5; i++) {
+            Vagon vagon = new Vagon((sangria+(30+entre_espacio)*i), posY, (int) numeros.get(i));
             contenido.add(vagon);
             contenidoC.add(vagon);
+            via_Principal.add(vagon);
             indices.add(i);
             indicesSub.add(i);
             AnchorPane.getChildren().add(vagon.getCanvas());
             
-        }
+        }        
         lista_ordenada=false;
     }
     
-    public void insertion(){
+    public void Crear_Vagones(int cantidad){
+        for (int i = 0; i < cantidad; i++) {
+            int random = rand.nextInt(100);
+            Vagon vagon = new Vagon((sangria+(30+entre_espacio)*i), posY, random);
+            contenido.add(vagon);
+            contenidoC.add(vagon);
+            via_Principal.add(vagon);
+            indices.add(i);
+            indicesSub.add(i);
+            AnchorPane.getChildren().add(vagon.getCanvas());
+            
+        }        
+        lista_ordenada=false;
+    }
+    
+    @FXML
+    public void seleccion(){
         if(!lista_ordenada){
             System.out.println("Insertion");
-            for (int i = 1; i < contenidoC.size(); i++) {
-                Vagon vagonActual = contenidoC.get(i);
-                int valorActual = (int) contenidoC.get(i).getValor();
-                int j = i - 1;
-                animacionV1(i);
-                while(j >= 0 && contenidoC.get(j).getAncho()>valorActual){
-                    animacionH1(j);
-                    contenidoC.set((j+1), contenidoC.get(j));
-                    j--;
+            for (int i = contenidoC.size()-1; i > 0; i--) {
+            int indiceMaximo = i;
+                for (int j = i-1; j >= 0; j--) {
+                    if((int) contenidoC.get(j).getValor()>(int) contenidoC.get(indiceMaximo).getValor()){
+                        indiceMaximo = j;
+                    }
                 }
-            contenidoC.set((j+1), vagonActual);
-            animacionV2(i,(j+1));
-            }
+            Vagon vagonTemp = contenidoC.get(indiceMaximo);
+            //animacion de separacion
+            animacionSeparacion(indiceMaximo, i);
+            contenidoC.set(indiceMaximo, contenidoC.get(i));
+            //animacion de cambio
+            animacionCambio(indiceMaximo,i);
+            contenidoC.set(i, vagonTemp);
+            //animacion de insercion
+        }
             ANIMACIONES.play();
             lista_ordenada=true;
         }else{
@@ -145,19 +189,82 @@ public class TrenController implements Initializable {
         }
     }
     
-    void animacionV1(int i){
-        int indice = (int) indices.get(i);
-    }
-    
-    void animacionV2(int i, int j){
+    public void animacionSeparacion(int indiceMaximo, int i){
+        int indexM = (int) indices.get(indiceMaximo);
         int indiceI = (int) indices.get(i);
-        int indiceJ = (int) indicesSub.get(j);
         
-        reordenar();
+        ParallelTransition  desplazamiento = new ParallelTransition ();
+        
+        for (int indice = indiceMaximo+1; indice <=i; indice++) {
+            int actual = (int) indices.get(indice);
+            
+            TranslateTransition H1 = new TranslateTransition();
+        
+            H1.setNode(contenido.get(actual).getCanvas());
+            H1.setDuration(Duration.millis(duracion_animacion*100));
+
+                H1.setByX(punto_interseccion);
+            
+            desplazamiento.getChildren().add(H1);
+        }
+        
+        TranslateTransition IndexMH = new TranslateTransition();
+        
+            IndexMH.setNode(contenido.get(indexM).getCanvas());
+            IndexMH.setDuration(Duration.millis(duracion_animacion*100));
+
+                IndexMH.setToX(punto_interseccion);
+            
+        TranslateTransition IndexMVH = new TranslateTransition();
+        
+            IndexMVH.setNode(contenido.get(indexM).getCanvas());
+            IndexMVH.setDuration(Duration.millis(duracion_animacion*100));
+
+                IndexMVH.setToX(1140);
+                IndexMVH.setToY(14);
+                contenido.get(indexM).setCorX(1140);
+                contenido.get(indexM).setCorY(14);
+        
+        
+       ANIMACIONES.getChildren().addAll(desplazamiento, IndexMH, IndexMVH);
     }
     
-    void animacionH1(int j){
-        int indiceJ = (int) indicesSub.get(j);
+    public void animacionCambio(int indiceMaximo, int i){
+        int indexM = (int) indices.get(indiceMaximo);
+        int indiceI = (int) indices.get(i);
+        
+        ParallelTransition  carrierIZQ = new ParallelTransition ();        
+        
+        for (int indice = indiceMaximo+1; indice <i; indice++) {
+            int actual = (int) indices.get(indice);
+            
+            TranslateTransition H1 = new TranslateTransition();
+        
+            H1.setNode(contenido.get(actual).getCanvas());
+            H1.setDuration(Duration.millis(duracion_animacion*100));
+
+                //H1.setToX(punto_interseccion-(30*(indice-i-1)));
+                H1.setToX(punto_interseccion-(30*(i-actual-1)));
+            
+            carrierIZQ.getChildren().add(H1);
+        }
+        
+        ParallelTransition  reiconporado = new ParallelTransition ();
+        for (int indice = indiceMaximo+1; indice <i; indice++) {
+            int actual = (int) indices.get(indice);
+            
+            TranslateTransition H1 = new TranslateTransition();
+        
+            H1.setNode(contenido.get(actual).getCanvas());
+            H1.setDuration(Duration.millis(duracion_animacion*100));
+
+                //H1.setToX(punto_interseccion-(30*(indice-i-1)));
+                H1.setToX(contenido.get(indexM).getCorX()-(30*(i-actual-1)));
+                H1.setToY(contenido.get(indexM).getCorY()-(30*(i-actual-1)));
+            
+            reiconporado.getChildren().add(H1);
+        }
+        ANIMACIONES.getChildren().addAll(carrierIZQ, reiconporado);
     }
     
     void reordenar(){
@@ -166,6 +273,7 @@ public class TrenController implements Initializable {
         }
     }
     
+    @FXML
     public void LOGICA_Boton_Pausa_Reanudar(){
         String estado = ANIMACIONES.getStatus().name();
         if(estado=="RUNNING"){
@@ -186,5 +294,9 @@ public class TrenController implements Initializable {
             }
         });        
     }    
+
+    @FXML
+    private void insertion(ActionEvent event) {
+    }
     
 }
