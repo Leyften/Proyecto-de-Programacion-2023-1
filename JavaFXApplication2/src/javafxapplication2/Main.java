@@ -67,7 +67,21 @@ public class Main extends Application {
     private void createFerrocarrilesTab() throws Exception {
         Tab ferrocarrilesTab = new Tab("trenes");
         Parent ferrocarrilesRoot = FXMLLoader.load(getClass().getResource("tren.fxml"));
-        ferrocarrilesTab.setContent(ferrocarrilesRoot);
+
+        // Crear un objeto ImageView con la imagen de fondo
+        InputStream stream = new FileInputStream("C:\\Users\\augus\\Desktop\\Nueva carpeta\\Proyecto-de-Programacion-2023-1-d1e9f3b49066606f7e398c82131d20c53e90d7f6\\JavaFXApplication2\\src\\fondo\\fondoparaunidad3.jpg");
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView(image);
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(imageView);
+        anchorPane.getChildren().add(ferrocarrilesRoot);
+        AnchorPane.setTopAnchor(ferrocarrilesRoot, 0.0);
+        AnchorPane.setBottomAnchor(ferrocarrilesRoot, 0.0);
+        AnchorPane.setLeftAnchor(ferrocarrilesRoot, 0.0);
+        AnchorPane.setRightAnchor(ferrocarrilesRoot, 0.0);
+
+        ferrocarrilesTab.setContent(anchorPane);
         tabPane.getTabs().add(ferrocarrilesTab);
     }
 
