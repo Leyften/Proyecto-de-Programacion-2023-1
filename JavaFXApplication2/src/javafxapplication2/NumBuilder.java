@@ -169,8 +169,8 @@ public class NumBuilder {
                 
             case 7:
                 
-                linea = new Line(posX, posY, posX+AnchNum/2-space, posY);
-                linea2 = new Line(posX+AnchNum/2-space, posY, posX+AnchNum/2-space, posY+AltNum);
+                linea = new Line(posX+5, posY+15, posX+AnchNum/2-space, posY+15);
+                linea2 = new Line(posX+AnchNum/2-space, posY+15, posX+AnchNum/2-space, posY+AltNum-5);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -179,11 +179,11 @@ public class NumBuilder {
 
             case 8:
                 
-                linea = new Line(posX, posY, posX, posY+AltNum);
-                linea2 = new Line(posX, posY, posX+AnchNum/2-space, posY);
-                linea3 = new Line(posX, posY+AltNum/2, posX+AnchNum/2-space, posY+AltNum/2);
-                linea4 = new Line(posX, posY+AltNum, posX+AnchNum/2-space, posY+AltNum);
-                linea5 = new Line(posX+AnchNum/2-space, posY, posX+AnchNum/2-space, posY+AltNum);
+                linea = new Line(posX+5, posY+15, posX+5, posY+AltNum-5);
+                linea2 = new Line(posX+5, posY+15, posX+AnchNum/2-space, posY+15);
+                linea3 = new Line(posX+5, posY+AltNum/2+5, posX+AnchNum/2-space, posY+AltNum/2+5);
+                linea4 = new Line(posX+5, posY+AltNum-5, posX+AnchNum/2-space, posY+AltNum-5);
+                linea5 = new Line(posX+AnchNum/2-space, posY+15, posX+AnchNum/2-space, posY+AltNum-5);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
@@ -195,10 +195,10 @@ public class NumBuilder {
                 
             case 9:
                 
-                linea = new Line(posX, posY, posX+AnchNum/2-space, posY);
-                linea2 = new Line(posX, posY, posX, posY+AltNum/2);
-                linea3 = new Line(posX+AnchNum/2-space, posY, posX+AnchNum/2-space, posY+AltNum);
-                linea4 = new Line(posX, posY+AltNum/2, posX+AnchNum/2-space, posY+AltNum/2);
+                linea = new Line(posX+5, posY+15, posX+AnchNum/2-space, posY+15);
+                linea2 = new Line(posX+5, posY+15, posX+5, posY+AltNum/2+5);
+                linea3 = new Line(posX+AnchNum/2-space, posY+15, posX+AnchNum/2-space, posY+AltNum-5);
+                linea4 = new Line(posX+5, posY+AltNum/2+5, posX+AnchNum/2-space, posY+AltNum/2+5);
                 
                 this.digitosLines.add(linea);
                 this.digitosLines.add(linea2);
