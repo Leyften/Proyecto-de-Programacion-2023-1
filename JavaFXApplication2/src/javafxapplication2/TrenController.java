@@ -40,6 +40,7 @@ public class TrenController implements Initializable {
     int posY = 360;
     int duracion_animacion = 20;
     int punto_interseccion = 800;
+    int tamaño_vagon=30;
     
     Random rand = new Random();
     
@@ -49,9 +50,6 @@ public class TrenController implements Initializable {
     
     ArrayList<Vagon> contenido = new ArrayList();
     ArrayList<Vagon> contenidoC = new ArrayList();
-    ArrayList<Vagon> via_Principal = new ArrayList();
-    ArrayList<Vagon> via_Superior = new ArrayList();
-    ArrayList<Vagon> via_Inferior = new ArrayList();
     ArrayList               indices = new ArrayList();
     ArrayList               indicesSub = new ArrayList();
     
@@ -99,8 +97,7 @@ public class TrenController implements Initializable {
         if(Texto_Usuario.getText().matches(regex)){
             //int cantidad = Integer.parseInt(Texto_Usuario.getText());
             if(existencia_Vagones==false){                
-                //Crear_Vagones(cantidad);
-                pruebas();
+                Crear_Vagones(cantidad);
                 existencia_Vagones = true;
             }else{
                 //AnchorPane.getChildren().removeAll(contenido); 
@@ -111,8 +108,7 @@ public class TrenController implements Initializable {
                 indicesSub.clear();
                 ANIMACIONES.stop();
                 ANIMACIONES.getChildren().remove(0, ANIMACIONES.getChildren().size());
-                //Crear_Vagones(cantidad);
-                pruebas();
+                Crear_Vagones(cantidad);
             }
             
         }else{
@@ -126,34 +122,12 @@ public class TrenController implements Initializable {
         }
     }
     
-    public void pruebas(){
-        ArrayList numeros = new ArrayList();
-        numeros.add(2);
-        numeros.add(5);
-        numeros.add(3);
-        numeros.add(1);
-        numeros.add(4);
-        
-        for (int i = 0; i < 5; i++) {
-            Vagon vagon = new Vagon((sangria+(30+entre_espacio)*i), posY, (int) numeros.get(i));
-            contenido.add(vagon);
-            contenidoC.add(vagon);
-            via_Principal.add(vagon);
-            indices.add(i);
-            indicesSub.add(i);
-            AnchorPane.getChildren().add(vagon.getCanvas());
-            
-        }        
-        lista_ordenada=false;
-    }
-    
     public void Crear_Vagones(int cantidad){
         for (int i = 0; i < cantidad; i++) {
             int random = rand.nextInt(100);
             Vagon vagon = new Vagon((sangria+(30+entre_espacio)*i), posY, random);
             contenido.add(vagon);
             contenidoC.add(vagon);
-            via_Principal.add(vagon);
             indices.add(i);
             indicesSub.add(i);
             AnchorPane.getChildren().add(vagon.getCanvas());
@@ -165,23 +139,28 @@ public class TrenController implements Initializable {
     @FXML
     public void seleccion(){
         if(!lista_ordenada){
-            System.out.println("Insertion");
             for (int i = contenidoC.size()-1; i > 0; i--) {
-            int indiceMaximo = i;
+                int indiceMaximo = i;
                 for (int j = i-1; j >= 0; j--) {
                     if((int) contenidoC.get(j).getValor()>(int) contenidoC.get(indiceMaximo).getValor()){
                         indiceMaximo = j;
                     }
                 }
-            Vagon vagonTemp = contenidoC.get(indiceMaximo);
-            //animacion de separacion
-            animacionSeparacion(indiceMaximo, i);
-            contenidoC.set(indiceMaximo, contenidoC.get(i));
-            //animacion de cambio
-            animacionCambio(indiceMaximo,i);
-            contenidoC.set(i, vagonTemp);
-            //animacion de insercion
-        }
+                if(!(indiceMaximo==i)){
+                    Vagon temp = contenidoC.get(indiceMaximo); 
+                    int tempInd = (int) indicesSub.get(indiceMaximo);
+                    contenidoC.remove(indiceMaximo);
+                    indicesSub.remove(indiceMaximo);
+                    //animacion de separacion                    
+                    ANIMACION_SEPARAR(indiceMaximo);
+                    //animacion para juntar
+                    ANIMACION_INCORPORACION(indiceMaximo, i);
+                    contenidoC.add(i, temp);
+                    indicesSub.add(i, tempInd);
+                    //animacion de encabezar
+                    ANIMACION_ENCABEZAR(i, indiceMaximo);
+                }            
+            }
             ANIMACIONES.play();
             lista_ordenada=true;
         }else{
@@ -189,82 +168,97 @@ public class TrenController implements Initializable {
         }
     }
     
-    public void animacionSeparacion(int indiceMaximo, int i){
-        int indexM = (int) indices.get(indiceMaximo);
+    public void ANIMACION_SEPARAR(int i){
         int indiceI = (int) indices.get(i);
         
-        ParallelTransition  desplazamiento = new ParallelTransition ();
-        
-        for (int indice = indiceMaximo+1; indice <=i; indice++) {
-            int actual = (int) indices.get(indice);
+        ParallelTransition  DESPLAZAMIENTO = new ParallelTransition ();            
+        int contador = 0;
+        for (int j = i; j < indices.size(); j++) {            
+            double desplazamientoH = punto_interseccion+((tamaño_vagon+entre_espacio)*(contador));
+            int actual = (int) indices.get(j);
             
-            TranslateTransition H1 = new TranslateTransition();
-        
-            H1.setNode(contenido.get(actual).getCanvas());
-            H1.setDuration(Duration.millis(duracion_animacion*100));
+            TranslateTransition H1 = new TranslateTransition();        
+                H1.setNode(contenido.get(actual).getCanvas());
+                H1.setDuration(Duration.millis(duracion_animacion*100));
 
-                H1.setByX(punto_interseccion);
+                H1.setToX(desplazamientoH);
             
-            desplazamiento.getChildren().add(H1);
+            DESPLAZAMIENTO.getChildren().add(H1);
+            contador++;
         }
         
-        TranslateTransition IndexMH = new TranslateTransition();
-        
-            IndexMH.setNode(contenido.get(indexM).getCanvas());
-            IndexMH.setDuration(Duration.millis(duracion_animacion*100));
+        TranslateTransition H2 = new TranslateTransition();        
+            H2.setNode(contenido.get(indiceI).getCanvas());
+            H2.setDuration(Duration.millis(duracion_animacion*100));
 
-                IndexMH.setToX(punto_interseccion);
+            H2.setToX(1140);
+            H2.setToY(14);
+        
             
-        TranslateTransition IndexMVH = new TranslateTransition();
+        ANIMACIONES.getChildren().addAll(DESPLAZAMIENTO, H2);
         
-            IndexMVH.setNode(contenido.get(indexM).getCanvas());
-            IndexMVH.setDuration(Duration.millis(duracion_animacion*100));
-
-                IndexMVH.setToX(1140);
-                IndexMVH.setToY(14);
-                contenido.get(indexM).setCorX(1140);
-                contenido.get(indexM).setCorY(14);
-        
-        
-       ANIMACIONES.getChildren().addAll(desplazamiento, IndexMH, IndexMVH);
     }
     
-    public void animacionCambio(int indiceMaximo, int i){
-        int indexM = (int) indices.get(indiceMaximo);
-        int indiceI = (int) indices.get(i);
+    public void ANIMACION_INCORPORACION(int indiceMaximo, int i){
         
-        ParallelTransition  carrierIZQ = new ParallelTransition ();        
+        ParallelTransition  DESPLAZAMIENTO = new ParallelTransition ();
         
-        for (int indice = indiceMaximo+1; indice <i; indice++) {
-            int actual = (int) indices.get(indice);
+        for (int j = indiceMaximo+1; j <= i; j++) {
+            int actual = (int) indices.get(j);
             
             TranslateTransition H1 = new TranslateTransition();
+                H1.setNode(contenido.get(actual).getCanvas());
+                H1.setDuration(Duration.millis(duracion_animacion*100));                
+                
+                H1.setToX(contenido.get(j-1).getCorX());
+                
+            DESPLAZAMIENTO.getChildren().add(H1);
+        }  
+        ANIMACIONES.getChildren().addAll(DESPLAZAMIENTO);
+    }
+    
+    public void ANIMACION_ENCABEZAR(int i, int indiceMaximo){
+        int indexMax = (int) indices.get(indiceMaximo); 
         
-            H1.setNode(contenido.get(actual).getCanvas());
-            H1.setDuration(Duration.millis(duracion_animacion*100));
+        TranslateTransition H1 = new TranslateTransition();        
+                H1.setNode(contenido.get(indexMax).getCanvas());
+                H1.setDuration(Duration.millis(duracion_animacion*100));
 
-                //H1.setToX(punto_interseccion-(30*(indice-i-1)));
-                H1.setToX(punto_interseccion-(30*(i-actual-1)));
-            
-            carrierIZQ.getChildren().add(H1);
+                H1.setToX(800);
+                H1.setToY(posY);
+                
+                
+        
+        TranslateTransition H2 = new TranslateTransition();        
+                H2.setNode(contenido.get(indexMax).getCanvas());
+                H2.setDuration(Duration.millis(duracion_animacion*100));
+
+                H2.setToX(contenido.get(i).getCorX());
+                
+        ANIMACIONES.getChildren().addAll(H1, H2);
+                
+        if(!(i==contenido.size()-1)){
+            ParallelTransition  DESPLAZAMIENTOH = new ParallelTransition (); 
+            for (int j = i+1; j < indices.size(); j++) {
+                int actual = (int) indices.get(j);
+
+                TranslateTransition H3 = new TranslateTransition();        
+                    H3.setNode(contenido.get(actual).getCanvas());
+                    H3.setDuration(Duration.millis(duracion_animacion*100));
+
+                    H3.setToX(contenido.get(j).getCorX());
+
+
+                DESPLAZAMIENTOH.getChildren().add(H3);
+            }
+            ANIMACIONES.getChildren().add(DESPLAZAMIENTOH);
         }
         
-        ParallelTransition  reiconporado = new ParallelTransition ();
-        for (int indice = indiceMaximo+1; indice <i; indice++) {
-            int actual = (int) indices.get(indice);
-            
-            TranslateTransition H1 = new TranslateTransition();
+                
+                
+                
         
-            H1.setNode(contenido.get(actual).getCanvas());
-            H1.setDuration(Duration.millis(duracion_animacion*100));
-
-                //H1.setToX(punto_interseccion-(30*(indice-i-1)));
-                H1.setToX(contenido.get(indexM).getCorX()-(30*(i-actual-1)));
-                H1.setToY(contenido.get(indexM).getCorY()-(30*(i-actual-1)));
-            
-            reiconporado.getChildren().add(H1);
-        }
-        ANIMACIONES.getChildren().addAll(carrierIZQ, reiconporado);
+        reordenar();
     }
     
     void reordenar(){
