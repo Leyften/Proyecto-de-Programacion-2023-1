@@ -15,11 +15,11 @@ import javafx.scene.shape.Line;
  * @author nikol
  */
 public class Vagon {
-    int corX;
-    int corY;
+    double corX;
+    double corY;
     
-    double ancho = 60;
-    double alto = 50;
+    double ancho = 30;
+    double alto = 20;
     int valor;
     
     Canvas canvas = new Canvas(ancho, alto);
@@ -43,7 +43,7 @@ public class Vagon {
         gc.setLineWidth(2);
         gc.strokeRect(0, 0, ancho, alto);
         
-        numBuilder = new NumBuilder(valor, 0, 0, ancho);
+        numBuilder = new NumBuilder(valor, 4, 15, ancho);
         
         gc.setStroke(Color.BLACK); 
         
@@ -70,19 +70,19 @@ public class Vagon {
         this.valor = valor;
     }    
     
-    public int getCorX() {
+    public double getCorX() {
         return corX;
     }
 
-    public void setCorX(int corX) {
+    public void setCorX(double corX) {
         this.corX = corX;
     }
 
-    public int getCorY() {
+    public double getCorY() {
         return corY;
     }
 
-    public void setCorY(int corY) {
+    public void setCorY(double corY) {
         this.corY = corY;
     }
 

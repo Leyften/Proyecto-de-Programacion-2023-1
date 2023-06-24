@@ -25,7 +25,7 @@ public class NumBuilder {
         digitosLines.clear();
         //Calculo de espacio y ancho
         this.space = (ancho*10)/100;
-        this.AltNum = ancho;
+        this.AltNum = ancho-20;
         ancho = (ancho*90)/100;
         
         //Caso de un solo digito

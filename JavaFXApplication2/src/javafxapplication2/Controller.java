@@ -350,6 +350,7 @@ public class Controller implements Initializable{
         TranslateTransition transicion2 = new TranslateTransition();
             transicion2.setNode(contenido.get(indiceI));
             transicion2.setDuration(Duration.millis(duracion_animacion*100));
+
             transicion2.setByY(200);
             
         indicesSub.set(j, indiceI);
