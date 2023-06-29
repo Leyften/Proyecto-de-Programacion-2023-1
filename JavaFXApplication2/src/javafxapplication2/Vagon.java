@@ -5,10 +5,12 @@
 package javafxapplication2;
 
 import java.util.ArrayList;
+import javafx.animation.TranslateTransition;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 /**
  *
@@ -60,6 +62,24 @@ public class Vagon {
         
         canvas.setTranslateX(this.corX); 
         canvas.setTranslateY(this.corY);
+    }
+    
+    public TranslateTransition ANIMACION(double X, Duration time){
+        TranslateTransition H = new TranslateTransition();        
+                H.setNode(getCanvas());
+                H.setDuration(time);
+                H.setToX(X);
+        return H;
+    }
+    
+    
+    public TranslateTransition ANIMACION2C(double X, double Y, Duration time){
+        TranslateTransition H = new TranslateTransition();        
+                H.setNode(getCanvas());
+                H.setDuration(time);
+                H.setToX(X);
+                H.setToY(Y);
+        return H;
     }
 
     public int getValor() {
