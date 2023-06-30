@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package javafxapplication2;
 
 import java.net.URL;
@@ -27,11 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author nikol
- */
+
 public class TrenController implements Initializable {
     
     int sangria = 2;

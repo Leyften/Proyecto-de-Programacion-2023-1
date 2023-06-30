@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package javafxapplication2;
 
 import java.util.ArrayList;
@@ -73,7 +70,7 @@ public class NumBuilder {
             
             case 1:
                 //Lineas que componen el numero
-                linea = new Line(posX+10, (posY+AltNum/2)-5, posX+AnchNum/2-space, posY+15);
+                linea = new Line(posX+10, (posY+AltNum/2)+5, posX+AnchNum/2-space, posY+15);
                 linea2 = new Line(posX+AnchNum/2-space, posY+15, posX+AnchNum/2-space, posY+AltNum-5);
                 //
                 this.digitosLines.add(linea);
