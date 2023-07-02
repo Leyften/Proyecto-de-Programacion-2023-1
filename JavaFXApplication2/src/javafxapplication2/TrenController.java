@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.animation.FillTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -67,6 +72,33 @@ public class TrenController implements Initializable {
     private TextField Texto_Usuario;
     @FXML
     private Slider Barra_Velocidad;
+    
+    @FXML
+    private Label linea1_for1;
+    @FXML
+    private Label linea2;
+    @FXML
+    private Label linea3_for2;
+    @FXML
+    private Label linea4_if1;
+    @FXML
+    private Label linea5;
+    @FXML
+    private Label linea6;
+    @FXML
+    private Label linea7;
+    @FXML
+    private Label linea8_if2;
+    @FXML
+    private Label linea9;
+    @FXML
+    private Label linea10;
+    @FXML
+    private Label linea11;
+    @FXML
+    private Label linea12;
+    @FXML
+    private Label linea13;
     
     
     public void ventanaERROR(String error){
@@ -152,7 +184,7 @@ public class TrenController implements Initializable {
                     contenidoC.remove(indiceMaximo);
                     indicesSub.remove(indiceMaximo);
                     //animacion de separacion                    
-                    ANIMACION_SEPARAR(indiceMaximo);
+                    ANIMACION_SEPARAR(indiceMaximo);                    
                     //animacion para juntar
                     ANIMACION_INCORPORACION(indiceMaximo, i);
                     contenidoC.add(i, temp);
@@ -166,6 +198,21 @@ public class TrenController implements Initializable {
         }else{
             ventanaERROR("ordenado");
         }
+    }
+    
+    public void ANIMACION_COLOR(Label label, Duration time){
+        Timeline timeline = new Timeline(
+                //new KeyFrame(Duration.ZERO, new KeyValue(label.textFillProperty(), Color.WHITE)),
+                //new KeyFrame(Duration.seconds(3), new KeyValue(label.textFillProperty(), Color.BLUE))
+                new KeyFrame(Duration.seconds(0), new KeyValue(label.styleProperty(), "-fx-background-color: blue;")),
+                new KeyFrame(time, new KeyValue(label.styleProperty(), "-fx-background-color: lightgray;"))
+
+                
+        );
+        
+        ANIMACIONES.getChildren().add(timeline);
+        
+        
     }
     
     public void ANIMACION_SEPARAR(int i){
@@ -183,6 +230,8 @@ public class TrenController implements Initializable {
         
         TranslateTransition H2 = contenido.get(indiceI).ANIMACION2C(1140, 14, Duration.millis(duracion_animacion*100));
             
+        
+        
         ANIMACIONES.getChildren().addAll(DESPLAZAMIENTO, H2);
         
     }

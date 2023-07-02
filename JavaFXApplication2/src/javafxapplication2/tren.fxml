@@ -5,7 +5,9 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="AnchorPane" prefHeight="720.0" prefWidth="1380.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication2.TrenController">
    <children>
@@ -19,5 +21,63 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" layoutX="738.0" layoutY="186.0" rotate="-45.0" stroke="BLACK" strokeType="INSIDE" width="490.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="800.0" layoutY="354.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="1140.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+      <Pane layoutX="7.0" layoutY="8.0" prefHeight="310.0" prefWidth="383.0">
+         <children>
+            <Label fx:id="linea1_for1" layoutX="1.0" layoutY="1.0" prefHeight="25.0" prefWidth="257.0" text="for(int i = numeros.size()-1; i&gt;0; i--){">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea2" layoutX="23.0" layoutY="24.0" prefHeight="25.0" prefWidth="150.0" text="int indiceMaximo =i;">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea3_for2" layoutX="24.0" layoutY="47.0" text="for(int j = i-1; j &gt;= 0; j--) {">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label fx:id="linea4_if1" layoutX="48.0" layoutY="69.0" text="if(numeros.get(j) &gt; numeros.get(indiceMaximo)){">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea5" layoutX="63.0" layoutY="91.0" text="indiceMaximo = j;">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea6" layoutX="52.0" layoutY="112.0" text="}">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea7" layoutX="39.0" layoutY="132.0" text="}">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea8_if2" layoutX="27.0" layoutY="153.0" text="if(!(indiceMaximo==i)){">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea9" layoutX="42.0" layoutY="174.0" text="int temp = numeros.get(indiceMaximo);">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea10" layoutX="43.0" layoutY="194.0" text="numeros.remove(indiceMaximo);">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea11" layoutX="43.0" layoutY="215.0" text="numeros.add(i, temp);">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="linea12" layoutX="32.0" layoutY="235.0" text="}">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="linea13" layoutX="6.0" layoutY="256.0" text="}">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
