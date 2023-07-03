@@ -1,16 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package javafxapplication2;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -19,25 +20,26 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author nikol
- */
+
 public class TrenController implements Initializable {
     
-    int sangria = 30;
-    int entre_espacio = 15;
+    int sangria = 2;
+    int entre_espacio = 2;
     int posX= 0;
     int posY = 360;
+    int duracion_animacion = 20;
+    int punto_interseccion = 800;
+    int tamaño_vagon=30;
     
     Random rand = new Random();
     
     boolean lista_ordenada = false;
-    boolean existencia_Vagones = false;
+    boolean existencia_Vagones = false;  
     
-    Vagon carril1 = new Vagon(20, 20, 5);
     
     ArrayList<Vagon> contenido = new ArrayList();
     ArrayList<Vagon> contenidoC = new ArrayList();
@@ -79,18 +81,20 @@ public class TrenController implements Initializable {
         alert.setContentText(textoError);
         alert.showAndWait();
     }   
-    
+   
     
     @FXML
     public void Logica_Boton_Crear(){
         String regex = "^(1[6-9]|[2-5][0-9]|6[0-4])$";
+        int cantidad = Integer.parseInt(Texto_Usuario.getText());
         if(Texto_Usuario.getText().matches(regex)){
-            int cantidad = Integer.parseInt(Texto_Usuario.getText());
+            //int cantidad = Integer.parseInt(Texto_Usuario.getText());
             if(existencia_Vagones==false){                
                 Crear_Vagones(cantidad);
                 existencia_Vagones = true;
             }else{
-                AnchorPane.getChildren().removeAll(contenido);                      
+                //AnchorPane.getChildren().removeAll(contenido); 
+                borrar();
                 contenido.clear();
                 contenidoC.clear();
                 indices.clear();
@@ -103,40 +107,52 @@ public class TrenController implements Initializable {
         }else{
             ventanaERROR("cantidad");
         }
-    }   
+    }
     
-    
+    public void borrar(){
+        for (int i = 0; i < contenido.size(); i++) {
+            AnchorPane.getChildren().removeAll(contenido.get(i).canvas);
+        }
+    }
     
     public void Crear_Vagones(int cantidad){
         for (int i = 0; i < cantidad; i++) {
             int random = rand.nextInt(100);
-            System.out.println(random);
-            Vagon vagon = new Vagon((sangria+(50+entre_espacio)*i), posY, random);
+            Vagon vagon = new Vagon((sangria+(30+entre_espacio)*i), posY, random);
             contenido.add(vagon);
             contenidoC.add(vagon);
             indices.add(i);
             indicesSub.add(i);
             AnchorPane.getChildren().add(vagon.getCanvas());
             
-        }
+        }        
         lista_ordenada=false;
     }
     
-    public void insertion(){
+    @FXML
+    public void seleccion(){
         if(!lista_ordenada){
-            System.out.println("Insertion");
-            for (int i = 1; i < contenidoC.size(); i++) {
-                Vagon vagonActual = contenidoC.get(i);
-                int valorActual = (int) contenidoC.get(i).getValor();
-                int j = i - 1;
-                animacionV1(i);
-                while(j >= 0 && contenidoC.get(j).getAncho()>valorActual){
-                    animacionH1(j);
-                    contenidoC.set((j+1), contenidoC.get(j));
-                    j--;
+            for (int i = contenidoC.size()-1; i > 0; i--) {
+                int indiceMaximo = i;
+                for (int j = i-1; j >= 0; j--) {
+                    if((int) contenidoC.get(j).getValor()>(int) contenidoC.get(indiceMaximo).getValor()){
+                        indiceMaximo = j;
+                    }
                 }
-            contenidoC.set((j+1), vagonActual);
-            animacionV2(i,(j+1));
+                if(!(indiceMaximo==i)){
+                    Vagon temp = contenidoC.get(indiceMaximo); 
+                    int tempInd = (int) indicesSub.get(indiceMaximo);
+                    contenidoC.remove(indiceMaximo);
+                    indicesSub.remove(indiceMaximo);
+                    //animacion de separacion                    
+                    ANIMACION_SEPARAR(indiceMaximo);
+                    //animacion para juntar
+                    ANIMACION_INCORPORACION(indiceMaximo, i);
+                    contenidoC.add(i, temp);
+                    indicesSub.add(i, tempInd);
+                    //animacion de encabezar
+                    ANIMACION_ENCABEZAR(i, indiceMaximo);
+                }            
             }
             ANIMACIONES.play();
             lista_ordenada=true;
@@ -145,19 +161,97 @@ public class TrenController implements Initializable {
         }
     }
     
-    void animacionV1(int i){
-        int indice = (int) indices.get(i);
+    public void ANIMACION_SEPARAR(int i){
+        int indiceI = (int) indices.get(i);
+        
+        ParallelTransition  DESPLAZAMIENTO = new ParallelTransition ();            
+        int contador = 0;
+        for (int j = i; j < indices.size(); j++) {            
+            double desplazamientoH = punto_interseccion+((tamaño_vagon+entre_espacio)*(contador));
+            int actual = (int) indices.get(j);
+            
+            TranslateTransition H1 = new TranslateTransition();        
+                H1.setNode(contenido.get(actual).getCanvas());
+                H1.setDuration(Duration.millis(duracion_animacion*100));
+
+                H1.setToX(desplazamientoH);
+            
+            DESPLAZAMIENTO.getChildren().add(H1);
+            contador++;
+        }
+        
+        TranslateTransition H2 = new TranslateTransition();        
+            H2.setNode(contenido.get(indiceI).getCanvas());
+            H2.setDuration(Duration.millis(duracion_animacion*100));
+
+            H2.setToX(1140);
+            H2.setToY(14);
+        
+            
+        ANIMACIONES.getChildren().addAll(DESPLAZAMIENTO, H2);
+        
     }
     
-    void animacionV2(int i, int j){
-        int indiceI = (int) indices.get(i);
-        int indiceJ = (int) indicesSub.get(j);
+    public void ANIMACION_INCORPORACION(int indiceMaximo, int i){
+        
+        ParallelTransition  DESPLAZAMIENTO = new ParallelTransition ();
+        
+        for (int j = indiceMaximo+1; j <= i; j++) {
+            int actual = (int) indices.get(j);
+            
+            TranslateTransition H1 = new TranslateTransition();
+                H1.setNode(contenido.get(actual).getCanvas());
+                H1.setDuration(Duration.millis(duracion_animacion*100));                
+                
+                H1.setToX(contenido.get(j-1).getCorX());
+                
+            DESPLAZAMIENTO.getChildren().add(H1);
+        }  
+        ANIMACIONES.getChildren().addAll(DESPLAZAMIENTO);
+    }
+    
+    public void ANIMACION_ENCABEZAR(int i, int indiceMaximo){
+        int indexMax = (int) indices.get(indiceMaximo); 
+        
+        TranslateTransition H1 = new TranslateTransition();        
+                H1.setNode(contenido.get(indexMax).getCanvas());
+                H1.setDuration(Duration.millis(duracion_animacion*100));
+
+                H1.setToX(800);
+                H1.setToY(posY);
+                
+                
+        
+        TranslateTransition H2 = new TranslateTransition();        
+                H2.setNode(contenido.get(indexMax).getCanvas());
+                H2.setDuration(Duration.millis(duracion_animacion*100));
+
+                H2.setToX(contenido.get(i).getCorX());
+                
+        ANIMACIONES.getChildren().addAll(H1, H2);
+                
+        if(!(i==contenido.size()-1)){
+            ParallelTransition  DESPLAZAMIENTOH = new ParallelTransition (); 
+            for (int j = i+1; j < indices.size(); j++) {
+                int actual = (int) indices.get(j);
+
+                TranslateTransition H3 = new TranslateTransition();        
+                    H3.setNode(contenido.get(actual).getCanvas());
+                    H3.setDuration(Duration.millis(duracion_animacion*100));
+
+                    H3.setToX(contenido.get(j).getCorX());
+
+
+                DESPLAZAMIENTOH.getChildren().add(H3);
+            }
+            ANIMACIONES.getChildren().add(DESPLAZAMIENTOH);
+        }
+        
+                
+                
+                
         
         reordenar();
-    }
-    
-    void animacionH1(int j){
-        int indiceJ = (int) indicesSub.get(j);
     }
     
     void reordenar(){
@@ -166,6 +260,7 @@ public class TrenController implements Initializable {
         }
     }
     
+    @FXML
     public void LOGICA_Boton_Pausa_Reanudar(){
         String estado = ANIMACIONES.getStatus().name();
         if(estado=="RUNNING"){
@@ -186,5 +281,9 @@ public class TrenController implements Initializable {
             }
         });        
     }    
+
+    @FXML
+    private void insertion(ActionEvent event) {
+    }
     
 }
