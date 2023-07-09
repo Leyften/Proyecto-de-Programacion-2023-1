@@ -1,6 +1,7 @@
 package javafxapplication2;
 
 import java.util.ArrayList;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -72,6 +73,14 @@ public class Vagon {
                 H.setToX(X);
                 H.setToY(Y);
         return H;
+    }
+    
+    public RotateTransition ANIMACION_ROTAR(int angulo, Duration time){
+        RotateTransition R = new RotateTransition();
+            R.setNode(getCanvas());
+            R.setDuration(time);
+            R.setToAngle(angulo);
+        return R;
     }
 
     public int getValor() {
