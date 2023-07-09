@@ -4,100 +4,96 @@
  */
 package javafxapplication2;
 
-import java.util.ArrayList;
-import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
 /**
  *
  * @author nikol
  */
-public class Vagon {
+public class Locomotora {
     double corX;
     double corY;
     
     double ancho = 30;
     double alto = 20;
-    int valor;
+    
     
     Canvas canvas = new Canvas(ancho, alto);
-    
-    NumBuilder numBuilder;
-    
-    ArrayList<Line> lines = new ArrayList<Line>();
-    
 
-    public Vagon(int corX, int corY, int valor) {
+    public Locomotora(double corX, double corY, int angulo) {
         this.corX = corX;
         this.corY = corY; 
-        this.valor = valor;
         
+        canvas.setTranslateX(this.corX); 
+        canvas.setTranslateY(this.corY);
+        
+        //Cuerpo de la locomotora
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
-        gc.setFill(Color.ORANGE);        
+        gc.setFill(Color.RED);        
         gc.fillRect(0, 0, ancho, alto);
         
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         gc.strokeRect(0, 0, ancho, alto);
+        //Cuerpo de la locomotora
         
-        numBuilder = new NumBuilder(valor, 4, 15, ancho);
+        //Venta del conductor
+        GraphicsContext ventana = canvas.getGraphicsContext2D();
+        ventana.setFill(Color.BLUE);
+        ventana.fillRect(22, 2,6 ,16 );
+            //entana.fillRect(X, Y, ancho, alto);
         
-        gc.setStroke(Color.BLACK); 
+        ventana.setStroke(Color.BLACK);
+        ventana.setLineWidth(1);
+        ventana.strokeRect(22, 2,6 ,16);
+        //Venta del conductor
         
-        for (int j = 0; j < numBuilder.getDigitos().size(); j++) {
-            this.lines.addAll(numBuilder.getDigitos().get(j));
-
-        }
+        //Chimenea
+        GraphicsContext chimenea = canvas.getGraphicsContext2D();
+        chimenea.setFill(Color.GREY);
+        chimenea.fillOval(2, 2, 16, 16);
+        //Chimenea
+        
+        //Humo
+        GraphicsContext HUMO = canvas.getGraphicsContext2D();
+        HUMO.setFill(Color.BLACK);
+        //X=10, Y=10, radio =6
+        HUMO.fillOval(4, 4, 12, 12);
+        //Humo
         
         
-        for (Line line : lines) {
-            gc.strokeLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
-        }
+        Rotate rotate = new Rotate(angulo, 15, 10);
+        canvas.getTransforms().add(rotate);
         
         
-        canvas.setTranslateX(this.corX); 
-        canvas.setTranslateY(this.corY);
     }
+    
     
     public TranslateTransition ANIMACION(double X, Duration time){
         TranslateTransition H = new TranslateTransition();        
-                H.setNode(getCanvas());
-                H.setDuration(time);
-                H.setToX(X);
+            H.setNode(getCanvas());
+            H.setDuration(time);
+            H.setToX(X);
         return H;
     }
     
     
     public TranslateTransition ANIMACION2C(double X, double Y, Duration time){
         TranslateTransition H = new TranslateTransition();        
-                H.setNode(getCanvas());
-                H.setDuration(time);
-                H.setToX(X);
-                H.setToY(Y);
+            H.setNode(getCanvas());
+            H.setDuration(time);
+            H.setToX(X);
+            H.setToY(Y);
         return H;
     }
     
-    public RotateTransition ANIMACION_ROTAR(int angulo, Duration time){
-        RotateTransition R = new RotateTransition();
-            R.setNode(getCanvas());
-            R.setDuration(time);
-            R.setToAngle(angulo);
-        return R;
-    }
-
-    public int getValor() {
-        return valor;
-    }
-
-    public void setValor(int valor) {
-        this.valor = valor;
-    }    
     
     public double getCorX() {
         return corX;
@@ -138,6 +134,7 @@ public class Vagon {
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
     }
+    
     
     
     

@@ -1,5 +1,6 @@
 package javafxapplication2;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +27,12 @@ public class Main extends Application {
         Parent sampleRoot = FXMLLoader.load(getClass().getResource("sample.fxml"));
         sampleTab.setContent(sampleRoot);
 
-        InputStream stream = new FileInputStream("C:\\Users\\nikol\\Desktop\\trabajando\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        //InputStream stream = new FileInputStream("C:\\Users\\nikol\\Desktop\\trabajando\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        //Ruta Relativa -> Sirve para que no estemos cambiando a cada rato la ubicacion de la imagen
+        String carpetaProyecto = System.getProperty("user.dir");
+        String rutaImagenFondo = carpetaProyecto + "/src/fondo/fondomario2.png"; 
+      
+        InputStream stream = new FileInputStream(rutaImagenFondo);
         Image image = new Image(stream);
         ImageView imageView = new ImageView(image);
 
