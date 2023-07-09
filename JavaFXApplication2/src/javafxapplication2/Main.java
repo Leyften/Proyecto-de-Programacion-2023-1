@@ -69,7 +69,7 @@ public class Main extends Application {
         Parent ferrocarrilesRoot = FXMLLoader.load(getClass().getResource("tren.fxml"));
 
         // Crear un objeto ImageView con la imagen de fondo
-        InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fond3.jpg");
+        InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondo3.jpg");
         Image image = new Image(stream);
         ImageView imageView = new ImageView(image);
 
