@@ -1,38 +1,58 @@
 package javafxapplication2;
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class Main extends Application {
-    //BUSCAR INTERPOLADOR
+
+    private TabPane tabPane;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Crear el TabPane
-        TabPane tabPane = new TabPane();
+        tabPane = new TabPane();
 
-        // Cargar la imagen en la pestaña "Sample"
-        Tab sampleTab = new Tab("Unidad 1 y 2");
+        // Crear las pestañas
+        createSampleTab();
+        createFerrocarrilesTab();
+
+        // Crear el botón para generar las pestañas nuevamente
+        Button regenerateButton = new Button("Regenerar pestañas");
+        regenerateButton.setOnAction(event -> regeneracion());
+
+        // Crear el contenedor para el botón
+        VBox root = new VBox(tabPane, regenerateButton);
+
+        // Crear la escena
+        Scene scene = new Scene(root);
+
+        primaryStage.setTitle("duramos+");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void createSampleTab() throws Exception {
+        Tab sampleTab = new Tab("gruas");
         Parent sampleRoot = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        sampleTab.setContent(sampleRoot);
 
-        //InputStream stream = new FileInputStream("C:\\Users\\nikol\\Desktop\\trabajando\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
-        //Ruta Relativa -> Sirve para que no estemos cambiando a cada rato la ubicacion de la imagen
+        //InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
         String carpetaProyecto = System.getProperty("user.dir");
-        String rutaImagenFondo = carpetaProyecto + "/src/fondo/fondomario2.png"; 
+        String rutaImagenFondo12 = carpetaProyecto + "/src/fondo/fondomario2.png"; 
       
-        InputStream stream = new FileInputStream(rutaImagenFondo);
+        InputStream stream = new FileInputStream(rutaImagenFondo12);
         Image image = new Image(stream);
         ImageView imageView = new ImageView(image);
 
@@ -45,21 +65,42 @@ public class Main extends Application {
         AnchorPane.setRightAnchor(sampleRoot, 0.0);
 
         sampleTab.setContent(anchorPane);
-
         tabPane.getTabs().add(sampleTab);
+    }
 
-        // Agregar la pestaña "Ferrocarriles" sin imagen
-        Tab ferrocarrilesTab = new Tab("Unidad 3");
+    private void createFerrocarrilesTab() throws Exception {
+        Tab ferrocarrilesTab = new Tab("trenes");
         Parent ferrocarrilesRoot = FXMLLoader.load(getClass().getResource("tren.fxml"));
-        ferrocarrilesTab.setContent(ferrocarrilesRoot);
+
+        // Crear un objeto ImageView con la imagen de fondo
+        //InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondo3.jpg");
+        String carpetaProyecto = System.getProperty("user.dir");
+        String rutaImagenFondo3 = carpetaProyecto + "/src/fondo/fondo3.jpg"; 
+      
+        InputStream stream = new FileInputStream(rutaImagenFondo3);
+        Image image = new Image(stream);
+        ImageView imageView = new ImageView(image);
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(imageView);
+        anchorPane.getChildren().add(ferrocarrilesRoot);
+        AnchorPane.setTopAnchor(ferrocarrilesRoot, 0.0);
+        AnchorPane.setBottomAnchor(ferrocarrilesRoot, 0.0);
+        AnchorPane.setLeftAnchor(ferrocarrilesRoot, 0.0);
+        AnchorPane.setRightAnchor(ferrocarrilesRoot, 0.0);
+
+        ferrocarrilesTab.setContent(anchorPane);
         tabPane.getTabs().add(ferrocarrilesTab);
+    }
 
-        // Crear la escena con el TabPane
-        Scene scene = new Scene(tabPane);
-
-        primaryStage.setTitle("Duramos+");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    private void regeneracion() {
+        tabPane.getTabs().clear();
+        try {
+            createSampleTab();
+            createFerrocarrilesTab();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
