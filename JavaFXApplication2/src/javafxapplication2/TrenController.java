@@ -34,8 +34,8 @@ import javafx.util.Duration;
 
 public class TrenController implements Initializable {
     //ESPACIO PARA MODIFICAR 
-    String apagado = "-fx-background-color: white;";
-    String encendido = "-fx-background-color: blue;";    
+    String apagado = "-fx-background-color: rgb(223, 198, 157);";
+    String encendido = "-fx-background-color: rgb(177, 222, 194);";     
     int sangria = 32;
     int entre_espacio = 2;
     int posX= 0;
@@ -160,8 +160,22 @@ public class TrenController implements Initializable {
     public void borrar(){
         for (int i = 0; i < contenido.size(); i++) {
             AnchorPane.getChildren().removeAll(contenido.get(i).canvas);
-        }
+        }        
+        linea1_for1.setStyle(apagado);
+        linea2.setStyle(apagado);
+        linea3_for2.setStyle(apagado);
+        linea4_if1.setStyle(apagado);
+        linea5.setStyle(apagado);
+        linea6.setStyle(apagado);
+        linea7.setStyle(apagado);
+        linea8_if2.setStyle(apagado);
+        linea9.setStyle(apagado);
+        linea10.setStyle(apagado);
+        linea11.setStyle(apagado);
+        linea12.setStyle(apagado);
+        linea13.setStyle(apagado);
     }
+
     
     public Locomotora crearLocmotora(double X, double Y, int angulo){
         Locomotora Loc = new Locomotora(X,Y, angulo);
@@ -179,6 +193,7 @@ public class TrenController implements Initializable {
     public void Crear_Vagones(int cantidad){
         for (int i = 0; i < cantidad; i++) {
             int random = rand.nextInt(100);
+            sangria= 736-((tamaño_vagon+entre_espacio)*(cantidad-1));
             Vagon vagon = new Vagon((sangria+(tamaño_vagon+entre_espacio)*i), posY, random);
             contenido.add(vagon);
             contenidoC.add(vagon);
@@ -187,7 +202,8 @@ public class TrenController implements Initializable {
             AnchorPane.getChildren().add(vagon.getCanvas());
             
         }
-        loc1 = crearLocmotora(0, posY, 180);            
+        double pos0 = contenido.get(0).corX-(tamaño_vagon+entre_espacio);
+        loc1 = crearLocmotora(pos0, posY, 180);            
         loc2 = crearLocmotora(CORD_X_LOC, CORD_Y_LOC, -45);
         loc3 = crearLocmotora((punto_interseccion+32), posY, 0);
         añadirLocomotora();
@@ -349,8 +365,8 @@ public class TrenController implements Initializable {
             DESPLAZAMIENTO2.getChildren().add(H1);
             
         }
-        
-        TranslateTransition H3 = loc1.ANIMACION(0, Duration.millis(duracion_animacion*100));
+        double posX0 = contenido.get(0).corX-(tamaño_vagon+entre_espacio);
+        TranslateTransition H3 = loc1.ANIMACION(posX0, Duration.millis(duracion_animacion*100));
         DESPLAZAMIENTO2.getChildren().add(H3);
         
         ANIMACIONES.getChildren().addAll(DESPLAZAMIENTO, DESPLAZAMIENTO2);
