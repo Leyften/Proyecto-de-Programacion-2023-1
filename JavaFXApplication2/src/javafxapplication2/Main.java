@@ -48,7 +48,11 @@ public class Main extends Application {
         Tab sampleTab = new Tab("gruas");
         Parent sampleRoot = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-        InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        //InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondomario2.png");
+        String carpetaProyecto = System.getProperty("user.dir");
+        String rutaImagenFondo12 = carpetaProyecto + "/src/fondo/fondomario2.png"; 
+      
+        InputStream stream = new FileInputStream(rutaImagenFondo12);
         Image image = new Image(stream);
         ImageView imageView = new ImageView(image);
 
@@ -69,7 +73,11 @@ public class Main extends Application {
         Parent ferrocarrilesRoot = FXMLLoader.load(getClass().getResource("tren.fxml"));
 
         // Crear un objeto ImageView con la imagen de fondo
-        InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondo3.jpg");
+        //InputStream stream = new FileInputStream("C:\\Users\\augus\\Documents\\GitHub\\Proyecto-de-Programacion-2023-1\\JavaFXApplication2\\src\\fondo\\fondo3.jpg");
+        String carpetaProyecto = System.getProperty("user.dir");
+        String rutaImagenFondo3 = carpetaProyecto + "/src/fondo/fondo3.jpg"; 
+      
+        InputStream stream = new FileInputStream(rutaImagenFondo3);
         Image image = new Image(stream);
         ImageView imageView = new ImageView(image);
 
