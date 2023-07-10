@@ -119,8 +119,8 @@ public class NumBuilder {
                 
             case 4: 
                 
-                linea = new Line(posX+5, posY+15, posX+5, posY+AltNum/2);
-                linea2 = new Line(posX+5, posY+AltNum/2, posX+AnchNum/2-space, posY+AltNum/2);
+                linea = new Line(posX+5, posY+15, posX+5, (posY+AltNum/2)+5);
+                linea2 = new Line(posX+5, (posY+AltNum/2)+5, posX+AnchNum/2-space, (posY+AltNum/2)+5);
                 linea3 = new Line(posX+AnchNum/2-space, posY+15, posX+AnchNum/2-space, posY+AltNum-5);
                 
                 this.digitosLines.add(linea);
